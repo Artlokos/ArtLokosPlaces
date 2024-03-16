@@ -6,24 +6,21 @@ let placesList = document.querySelector('.places__list');
 
 // @todo: Функция создания карточки
 
-function addCard (init, del_card) {
+function addCard (init) {
     let nextCard = cardTemplate.querySelector('.card').cloneNode(true);
+    let delButton = nextCard.querySelector('.card__delete-button');
 
     nextCard.querySelector('.card__title').textContent = init.name;
     nextCard.querySelector('.card__image').src = init.link;
     nextCard.querySelector('.card__image').alt = `Изображение места ${init.name}`;
-    nextCard.querySelector('.card__delete-button').addEventListener('click',function(){
-        del_card(nextCard);
-    // nextCard.querySelector('.card__delete-button').addEventListener('click', function(evt){
-    //     let cardToDelete = evt.target.closest('.card');
-    //     cardToDelete.remove();
+    delButton.addEventListener('click', function(){
+        handleDelete(nextCard);
     });
     return nextCard;
 };
 
 // @todo: Функция удаления карточки
-function del_card(evt) {
-    let cardToDelete = evt.target.closest('.card');
+function handleDelete(cardToDelete) {
     cardToDelete.remove();
 }
 // @todo: Вывести карточки на страницу

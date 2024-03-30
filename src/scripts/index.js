@@ -16,6 +16,8 @@ import fontInterRegular from '../vendor/fonts/Inter-Regular.woff2';
 
 import mainCss from '../pages/index.css';
 
+import { initialCards } from './cards';
+
 const imgForCards =[
 {name:'addIcon' , link:addIcon},   
 {name:'avatar' , link:avatar},
@@ -36,37 +38,16 @@ const fontsForProject = [
 {name: 'fontInterRegular' , link:fontInterRegular},  
 ];
 
-const initialCards = [
-  {
-    name: "Архыз",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  }
-];
+const popupTypeNewCard = document.querySelector('.popup_type_new-card');
+const popupTypeEdit = document.querySelector('.popup_type_edit');
+const popupTypeImage = document.querySelector('.popup_type_image');
+
 
 // @todo: Темплейт карточки
 const cardTemplate = document.querySelector("#card-template").content;
 // @todo: DOM узлы
 const addButton = document.querySelector(".profile__add-button");
+const profileEditButton = document.querySelector(".profile__edit-button");
 const placesList = document.querySelector(".places__list");
 
 // @todo: Функция создания карточки
@@ -87,6 +68,18 @@ function createCard(cardData, handleDelete) {
 const handleDelete = (cardToDelete) => cardToDelete.remove();
 // @todo: Вывести карточки на страницу
 
-addButton.addEventListener("click", function () {
+profileEditButton.addEventListener("click", function () {
   initialCards.forEach((cardData) => placesList.append(createCard(cardData, handleDelete)));
 });
+
+function openPopup(elem) {
+  return elem.classList.add('popup_is_opened');
+};
+
+addButton.addEventListener("click", function() {
+  const a = document.querySelector('.popup_type_edit');
+  a.classList.add('.popup_is_opened');
+  return a;
+})
+
+// profileEditButton.addEventListener("click", openPopup (popupTypeEdit));

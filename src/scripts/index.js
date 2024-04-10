@@ -41,6 +41,7 @@ const fontsForProject = [
 const popupTypeNewCard = document.querySelector('.popup_type_new-card');
 const popupTypeEdit = document.querySelector('.popup_type_edit');
 const popupTypeImage = document.querySelector('.popup_type_image');
+const popupButtonClose = document.querySelector('.popup__close');
 
 
 // @todo: Темплейт карточки
@@ -50,6 +51,7 @@ const addButton = document.querySelector(".profile__add-button");
 const profileEditButton = document.querySelector(".profile__edit-button");
 const placesList = document.querySelector(".places__list");
 
+document.removeEventListener('keydown', closeEscape);
 // @todo: Функция создания карточки
 
 function createCard(cardData, handleDelete) {
@@ -68,7 +70,7 @@ function createCard(cardData, handleDelete) {
 const handleDelete = (cardToDelete) => cardToDelete.remove();
 // @todo: Вывести карточки на страницу
 
-profileEditButton.addEventListener("click", function () {
+addButton.addEventListener("click", function () {
   initialCards.forEach((cardData) => placesList.append(createCard(cardData, handleDelete)));
 });
 
@@ -76,10 +78,21 @@ function openPopup(elem) {
   return elem.classList.add('popup_is_opened');
 };
 
-addButton.addEventListener("click", function() {
-  const a = document.querySelector('.popup_type_edit');
-  a.classList.add('.popup_is_opened');
-  return a;
-})
+function closePopup(elem) {
+  return elem.classList.remove('popup_is_opened');
+}
 
-// profileEditButton.addEventListener("click", openPopup (popupTypeEdit));
+function closeEscape(evt) {
+  if(evt.key === "Escape") {
+    closePopup(document.querySelector('.popup_is-opened'));
+  }
+}
+
+profileEditButton.addEventListener('click', ()=>{
+  // return popupTypeEdit.classList.add('popup_is-opened');
+  openPopup(popupTypeEdit);
+});
+
+popupButtonClose.addEventListener('click',()=>{
+  return popupTypeEdit.classList.remove('popup_is-opened');
+});

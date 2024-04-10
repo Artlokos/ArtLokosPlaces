@@ -38,11 +38,14 @@ const fontsForProject = [
 {name: 'fontInterRegular' , link:fontInterRegular},  
 ];
 
+
+const popup = document.querySelector('.popup');
 const popupTypeNewCard = document.querySelector('.popup_type_new-card');
 const popupTypeEdit = document.querySelector('.popup_type_edit');
 const popupTypeImage = document.querySelector('.popup_type_image');
-const popupButtonClose = document.querySelector('.popup__close');
-
+const popupCloseButton = document.querySelector('.popup__close');
+const nameFromHeader = document.querySelector('.profile__title');
+const jobFromHeader = document.querySelector('.profile__description');
 
 // @todo: Темплейт карточки
 const cardTemplate = document.querySelector("#card-template").content;
@@ -51,7 +54,7 @@ const addButton = document.querySelector(".profile__add-button");
 const profileEditButton = document.querySelector(".profile__edit-button");
 const placesList = document.querySelector(".places__list");
 
-document.removeEventListener('keydown', closeEscape);
+document.removeEventListener('keydown', closeWithEsc);
 // @todo: Функция создания карточки
 
 function createCard(cardData, handleDelete) {
@@ -72,27 +75,64 @@ const handleDelete = (cardToDelete) => cardToDelete.remove();
 
 addButton.addEventListener("click", function () {
   initialCards.forEach((cardData) => placesList.append(createCard(cardData, handleDelete)));
+  openPopup(popupTypeNewCard,'popup_type_new-card');
 });
 
 function openPopup(elem) {
-  return elem.classList.add('popup_is_opened');
+  document.addEventListener('keydown', closeWithEsc);
+  return elem.classList.add('popup_is-opened');
 };
 
 function closePopup(elem) {
-  return elem.classList.remove('popup_is_opened');
+  document.removeEventListener('keydown', closeWithEsc);
+  return elem.classList.remove('popup_is-opened');
 }
 
-function closeEscape(evt) {
-  if(evt.key === "Escape") {
-    closePopup(document.querySelector('.popup_is-opened'));
+function closeWithEsc(evt) {
+  if (evt.key==="Escape") {
+      closePopup(document.querySelector('.popup_is-opened'));
   }
 }
 
-profileEditButton.addEventListener('click', ()=>{
-  // return popupTypeEdit.classList.add('popup_is-opened');
-  openPopup(popupTypeEdit);
+function closeByClickOnOverlay(evt) {
+  if(evt.target.classList.contains('popup_is-opened')) {
+    closePopup(evt.target);
+  }
+}
+
+profileEditButton.addEventListener("click", ()=>{
+  openPopup (popupTypeEdit);
 });
 
-popupButtonClose.addEventListener('click',()=>{
-  return popupTypeEdit.classList.remove('popup_is-opened');
+popupCloseButton.addEventListener('click', ()=>{
+  closePopup(popupTypeEdit);
 });
+
+popupTypeImage.addEventListener('click',()=>{
+  openPopup(popupTypeEdit)
+})
+
+popup.addEventListener('click', closeByClickOnOverlay);
+
+// Находим форму в DOM
+const formElement = document.querySelector('.popup__form'); // Воспользуйтесь методом querySelector()
+// Находим поля формы в DOM
+const nameInput = formElement.querySelector('.popup__input_type_card-name'); // Воспользуйтесь инструментом .querySelector()
+const jobInput = formElement.querySelector('.popup__input_type_description');// Воспользуйтесь инструментом .querySelector()
+
+// Обработчик «отправки» формы, хотя пока
+// она никуда отправляться не будет
+function handleFormSubmit(evt) {
+    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+                                                // Так мы можем определить свою логику отправки.
+                                                // О том, как это делать, расскажем позже.
+
+    nameFromHeader.textContent = evt.nameInput // Получите значение полей jobInput и nameInput из свойства value
+    jobFromHeader.textContent = evt.jobInput  // Выберите элементы, куда должны быть вставлены значения полей
+
+    // Вставьте новые значения с помощью textContent
+}
+
+// Прикрепляем обработчик к форме:
+// он будет следить за событием “submit” - «отправка»
+formElement.addEventListener('submit', handleFormSubmit); 

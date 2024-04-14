@@ -43,6 +43,7 @@ const popup = document.querySelector('.popup');
 const popupTypeNewCard = document.querySelector('.popup_type_new-card');
 const popupTypeEdit = document.querySelector('.popup_type_edit');
 const popupTypeImage = document.querySelector('.popup_type_image');
+const popupCaption = document.querySelector('.popup__caption');
 const nameFromHeader = document.querySelector('.profile__title');
 const jobFromHeader = document.querySelector('.profile__description');
 
@@ -53,17 +54,22 @@ const cardTemplate = document.querySelector("#card-template").content;
 const addButton = document.querySelector(".profile__add-button");
 const profileEditButton = document.querySelector(".profile__edit-button");
 const placesList = document.querySelector(".places__list");
+const popupImage = document.querySelector('.popup__image');
 
-initialCards.forEach((cardData) => placesList.append(createCard(cardData, handleDelete)));
+initialCards.forEach((cardData) => placesList.append(createCard(cardData, handleDelete, toggleLikeButton, imgView)));
 
-function createCard(cardData, handleDelete) {
+function createCard(cardData, handleDelete, toggleLikeButton, imgView) {
   const nextCard = cardTemplate.querySelector(".card").cloneNode(true);
   const delButton = nextCard.querySelector(".card__delete-button");
   const cardTitle = nextCard.querySelector(".card__title");
   const cardImage = nextCard.querySelector(".card__image");
+  const cardLikeButton = nextCard.querySelector(".card__like-button");
   cardTitle.textContent = cardData.name;
   cardImage.src = cardData.link;
   cardImage.alt = `Изображение места ${cardData.name}`;
+  cardImage.addEventListener("click", ()=> imgView(cardImage));
+
+  cardLikeButton.addEventListener("click", ()=> toggleLikeButton(cardLikeButton));
   delButton.addEventListener("click", () => handleDelete(nextCard));
   return nextCard;
 }
@@ -71,6 +77,21 @@ function createCard(cardData, handleDelete) {
 // @todo: Функция удаления карточки
 const handleDelete = (cardToDelete) => cardToDelete.remove();
 // @todo: Вывести карточки на страницу
+
+const toggleLikeButton = (cardButtonToLike) => {
+  if (cardButtonToLike.classList.contains('card__like-button_is-active')) {
+    cardButtonToLike.classList.remove('card__like-button_is-active')
+  } else {
+    cardButtonToLike.classList.add('card__like-button_is-active')
+  }
+}
+
+function imgView(imgToView) {
+  popupImage.src = imgToView.src;
+  popupImage.alt = imgToView.alt;
+  // popupCaption.value = imgToView.name;
+  openPopup(popupTypeImage);
+  }
 
 addButton.addEventListener("dblclick", function () {
   

@@ -80,6 +80,10 @@ addButton.addEventListener("click", function () {
 
 function openPopup(elem) {
   document.addEventListener('keydown', closeWithEsc);
+  // const nameInPopup = document.querySelector('.popup__input_type_name');
+  // const descriptionInPopup = document.querySelector('.popup__input_type_description')
+  // nameInPopup.value = nameFromHeader.textContent;
+  // descriptionInPopup.value = jobFromHeader.textContent;
   return elem.classList.add('popup_is-opened');
 };
 
@@ -127,8 +131,8 @@ function handleFormSubmit(evt) {
                                                 // Так мы можем определить свою логику отправки.
                                                 // О том, как это делать, расскажем позже.
 
-    nameFromHeader.textContent = evt.nameInput // Получите значение полей jobInput и nameInput из свойства value
-    jobFromHeader.textContent = evt.jobInput  // Выберите элементы, куда должны быть вставлены значения полей
+    nameFromHeader.textContent = evt.target.children[0].value // Получите значение полей jobInput и nameInput из свойства value
+    jobFromHeader.textContent = evt.target.children[1].value  // Выберите элементы, куда должны быть вставлены значения полей
 
     // Вставьте новые значения с помощью textContent
 }

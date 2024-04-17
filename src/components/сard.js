@@ -1,8 +1,9 @@
+import { openPopup } from "./modal";
 const popupTypeImage = document.querySelector('.popup_type_image'); 
 const popupImage = document.querySelector('.popup__image');
 const popupCaption = document.querySelector('.popup__caption');
 
-export function ImgView(cardData) {
+export function ImgView(cardData, popupTypeImage) {
   
   popupImage.src = cardData.link;
   popupImage.alt = cardData.name;
@@ -27,7 +28,7 @@ export function createCard(cardData, ImgView){
   const cardLikeButton = card.querySelector('.card__like-button');
   cardLikeButton.addEventListener('click', () => rebindLike(cardLikeButton)); 
 
-  cardImage.addEventListener('click', () => ImgView(cardData));
+  cardImage.addEventListener('click', () => ImgView(cardData, popupTypeImage));
 
   return card;
 }

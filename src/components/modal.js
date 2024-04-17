@@ -1,3 +1,4 @@
+import { createCard, ImgView } from "./сard";
 
 const popupForm = document.querySelector('.popup__form');
 const popupTypeEdit = document.querySelector('.popup_type_edit');
@@ -7,7 +8,7 @@ const inputTypeCardName = document.querySelector('.popup__input_type_card-name')
 const inputTypeURL = document.querySelector('.popup__input_type_url'); 
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
-
+const placesList = document.querySelector('.places__list');
 export function openPopup(popup) {
   popup.classList.add('popup_is-opened');
   document.addEventListener('keydown', closePopupWithEscape)
@@ -49,6 +50,6 @@ export function addNewCard(evt) {
 
   inputTypeCardName.value = "";
   inputTypeURL.value = "";
-
+  const popupTypeNewCard = document.querySelector('.popup_type_new-card');
   closePopup(popupTypeNewCard);
 }

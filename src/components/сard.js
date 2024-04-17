@@ -1,47 +1,43 @@
-import { openPopup } from "./modal";
+const popupTypeImage = document.querySelector('.popup_type_image'); 
+const popupImage = document.querySelector('.popup__image');
+const popupCaption = document.querySelector('.popup__caption');
 
-export function createCard(cardData, handleDelete, toggleLikeButton, imgView) {
-    //Локальные константы для отдельной карточки
-    const cardTemplate = document.querySelector("#card-template").content;
-    const nextCard = cardTemplate.querySelector(".card").cloneNode(true);
-    const delButton = nextCard.querySelector(".card__delete-button");
-    const cardTitle = nextCard.querySelector(".card__title");
-    const cardImage = nextCard.querySelector(".card__image");
-    const cardLikeButton = nextCard.querySelector(".card__like-button");
-    
-    //Наполнение из cardData
-    cardTitle.textContent = cardData.name;
-    cardImage.name = cardData.name;
-    cardImage.src = cardData.link;
-    cardImage.alt = `Изображение места ${cardData.name}`;
-
-    //Слушатели
-    cardImage.addEventListener("click", ()=> {
-      openPopup(imgView(cardImage));
-    });
-    cardLikeButton.addEventListener("click", ()=> toggleLikeButton(cardLikeButton));
-    delButton.addEventListener("click", () => handleDelete(nextCard));
-    
-    return nextCard;
-  };
-
- export function handleDelete(cardToDelete) {cardToDelete.remove();}
-
- export function toggleLikeButton (cardButtonToLike) {
-    if (cardButtonToLike.classList.contains('card__like-button_is-active')) {
-      cardButtonToLike.classList.remove('card__like-button_is-active');
-    } else {
-      cardButtonToLike.classList.add('card__like-button_is-active');
-    }
-  }
-
-  export function imgView(imgToView) {
-    const popupImage = document.querySelector('.popup__image');
-    const popupCaption = document.querySelector('.popup__caption');
-    popupImage.src = imgToView.src;
-    popupImage.alt = imgToView.alt;
-    popupCaption.textContent = imgToView.name;
-    return popupImage;
-    }
-
+export function ImgView(cardData) {
   
+  popupImage.src = cardData.link;
+  popupImage.alt = cardData.name;
+  popupCaption.textContent = cardData.name;
+
+  openPopup(popupTypeImage);
+}
+
+export function createCard(cardData, ImgView){
+  const cardTemplate = document.querySelector('#card-template').content;
+  const card = cardTemplate.querySelector('.card').cloneNode(true);
+  const cardImage = card.querySelector('.card__image');
+  const cardTitle = card.querySelector('.card__title'); 
+
+  cardImage.src = cardData.link;
+  cardImage.alt = cardData.name;
+  cardTitle.textContent = cardData.name;
+
+  const cardDeleteButton = card.querySelector('.card__delete-button');
+  cardDeleteButton.addEventListener('click', () => deleteCard(card)); 
+
+  const cardLikeButton = card.querySelector('.card__like-button');
+  cardLikeButton.addEventListener('click', () => rebindLike(cardLikeButton)); 
+
+  cardImage.addEventListener('click', () => ImgView(cardData));
+
+  return card;
+}
+
+export function deleteCard(card) {
+  card.remove();
+}
+
+export function rebindLike(cardLikeOnActive) {
+  cardLikeOnActive.classList.toggle('card__like-button_is-active')
+}
+
+

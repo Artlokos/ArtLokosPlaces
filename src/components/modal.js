@@ -1,33 +1,54 @@
-export function closeByClickOnOverlay(evt) {
-    if(evt.target.classList.contains('popup_is-opened')) {closePopup(evt.target);}
-  }
 
- export function closePopup(evt) {
-    document.removeEventListener('keydown', closeWithEsc);
-    return evt.classList.remove('popup_is-opened');
-  }
-  
-  export function closeWithEsc(evt) {
-    if (evt.key==="Escape") {closePopup(document.querySelector('.popup_is-opened'));}
-  }
-  
-  export function handleFormSubmit(evt) {
-    evt.preventDefault();
-    const profileTitle = document.querySelector('.profile__title');
-    const profileDescription = document.querySelector('.profile__description');
-    profileTitle.textContent = evt.target.children[0].value;
-    profileDescription.textContent = evt.target.children[1].value; 
+const popupForm = document.querySelector('.popup__form');
+const popupTypeEdit = document.querySelector('.popup_type_edit');
+const inputTypeName = popupForm.querySelector('.popup__input_type_name');
+const inputTypeDescription = popupForm.querySelector('.popup__input_type_description');
+const inputTypeCardName = document.querySelector('.popup__input_type_card-name');
+const inputTypeURL = document.querySelector('.popup__input_type_url'); 
+const profileTitle = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
+
+export function openPopup(popup) {
+  popup.classList.add('popup_is-opened');
+  document.addEventListener('keydown', closePopupWithEscape)
 }
 
-export function openPopup(elem) {
-  const popup = document.querySelector('.popup');
-  elem.classList.add('popup_is-animated');
-  document.addEventListener('keydown', closeWithEsc);
-  elem.addEventListener('click', closeByClickOnOverlay);
+export function closePopup(popup) {
+popup.classList.remove('popup_is-opened');
+document.removeEventListener('keydown', closePopupWithEscape);
+}
 
-  const popupCloseButton = elem.querySelector('.popup__close');
-  popupCloseButton.addEventListener('click', ()=>{closePopup(elem);});
-  
-  elem.classList.add('popup_is-opened');
-  return elem;
+export function closePopupWithEscape(event) {
+if(event.key === 'Escape') {
+  const popup = document.querySelector('.popup_is-opened');
+  closePopup(popup)
+}
+}
+export function closePopupWithOverlay(event) {
+if(event.target.classList.contains('popup_is-opened')) {
+  closePopup(event.target);
+}
+}
+export function changeProfile(evt) {
+  evt.preventDefault();
+
+  profileTitle.textContent = inputTypeName.value;
+  profileDescription.textContent = inputTypeDescription.value;
+
+  closePopup(popupTypeEdit);
+}
+export function addNewCard(evt) {
+  evt.preventDefault();
+
+  const cardData = {
+    name: inputTypeCardName.value,
+    link: inputTypeURL.value,
+  }
+  const card = createCard(cardData, ImgView);
+  placesList.prepend(card);
+
+  inputTypeCardName.value = "";
+  inputTypeURL.value = "";
+
+  closePopup(popupTypeNewCard);
 }

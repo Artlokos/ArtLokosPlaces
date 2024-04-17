@@ -1,7 +1,7 @@
 import mainCss from '../pages/index.css';
 import { initialCards } from './cards';
 import { createCard, handleDelete, toggleLikeButton, imgView } from '../components/сard';
-import { closeByClickOnOverlay, closePopup, closeWithEsc, handleFormSubmit } from '../components/modal';
+import { closeByClickOnOverlay, openPopup, closePopup, closeWithEsc, handleFormSubmit } from '../components/modal';
 
 // Глобальные константы
 // Попап (модальные окна)
@@ -31,25 +31,15 @@ initialCards.forEach((cardData) => placesList.append(createCard(cardData, handle
  popupForm.addEventListener("submit", handleFormSubmit);
 
 
-function openPopup(elem) {
-  elem.classList.add('popup_is-animated');
-  document.addEventListener('keydown', closeWithEsc);
-  const popupContent = elem.querySelector('.popup__content');
-  const formPopup = elem.querySelector('.popup__form');
-  const popupCloseButton = popupContent.querySelector('.popup__close');
-  const placeForNameToInput = formPopup.querySelector('.popup__input_type_name');
-  const placeForJobToInput = formPopup.querySelector('.popup__input_type_description');
-  placeForNameToInput.value = profileTitle.textContent;
-  placeForJobToInput.value = profileDescription.textContent;
 
-  popupCloseButton.addEventListener('click', ()=>{
-    closePopup(popupTypeEdit);
-  });
-  popup.addEventListener('click', closeByClickOnOverlay);
-  
-  elem.classList.add('popup_is-opened');
-  return elem;
-}
+
+  // const popupContent = elem.querySelector('.popup__content');
+  // const formPopup = elem.querySelector('.popup__form');
+  // const placeForNameToInput = formPopup.querySelector('.popup__input_type_name');
+  // const placeForJobToInput = formPopup.querySelector('.popup__input_type_description');
+  // placeForNameToInput.value = profileTitle.textContent;
+  // placeForJobToInput.value = profileDescription.textContent;
+
 
 function openPopupNewCard(elem) {
   document.addEventListener('keydown', closeWithEsc);

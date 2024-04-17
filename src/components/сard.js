@@ -1,3 +1,5 @@
+import { openPopup } from "./modal";
+
 export function createCard(cardData, handleDelete, toggleLikeButton, imgView) {
     //Локальные константы для отдельной карточки
     const cardTemplate = document.querySelector("#card-template").content;
@@ -14,7 +16,9 @@ export function createCard(cardData, handleDelete, toggleLikeButton, imgView) {
     cardImage.alt = `Изображение места ${cardData.name}`;
 
     //Слушатели
-    cardImage.addEventListener("click", ()=> imgView(cardImage));
+    cardImage.addEventListener("click", ()=> {
+      openPopup(imgView(cardImage));
+    });
     cardLikeButton.addEventListener("click", ()=> toggleLikeButton(cardLikeButton));
     delButton.addEventListener("click", () => handleDelete(nextCard));
     

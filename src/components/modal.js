@@ -1,14 +1,3 @@
-import { createCard, ImgView } from "./сard";
-
-const popupForm = document.querySelector('.popup__form');
-const popupTypeEdit = document.querySelector('.popup_type_edit');
-const inputTypeName = popupForm.querySelector('.popup__input_type_name');
-const inputTypeDescription = popupForm.querySelector('.popup__input_type_description');
-const inputTypeCardName = document.querySelector('.popup__input_type_card-name');
-const inputTypeURL = document.querySelector('.popup__input_type_url'); 
-const profileTitle = document.querySelector('.profile__title');
-const profileDescription = document.querySelector('.profile__description');
-const placesList = document.querySelector('.places__list');
 export function openPopup(popup) {
   popup.classList.add('popup_is-opened');
   document.addEventListener('keydown', closePopupWithEscape)
@@ -26,30 +15,5 @@ if(event.key === 'Escape') {
 }
 }
 export function closePopupWithOverlay(event) {
-if(event.target.classList.contains('popup_is-opened')) {
-  closePopup(event.target);
-}
-}
-export function changeProfile(evt) {
-  evt.preventDefault();
-
-  profileTitle.textContent = inputTypeName.value;
-  profileDescription.textContent = inputTypeDescription.value;
-
-  closePopup(popupTypeEdit);
-}
-export function addNewCard(evt) {
-  evt.preventDefault();
-
-  const cardData = {
-    name: inputTypeCardName.value,
-    link: inputTypeURL.value,
-  }
-  const card = createCard(cardData, ImgView);
-  placesList.prepend(card);
-
-  inputTypeCardName.value = "";
-  inputTypeURL.value = "";
-  const popupTypeNewCard = document.querySelector('.popup_type_new-card');
-  closePopup(popupTypeNewCard);
+if(event.target.classList.contains('popup_is-opened')) {closePopup(event.target);}
 }

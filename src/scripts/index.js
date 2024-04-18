@@ -1,13 +1,15 @@
 import '../pages/index.css'
 import {initialCards} from './cards.js';
-import {createCard,deleteCard,rebindLike,ImgView} from '../components/сard.js';
-import {openPopup, closePopup, closePopupWithOverlay,addNewCard, changeProfile, closePopupWithEscape} from '../components/modal.js';
+import {createCard} from '../components/сard.js';
+import {openPopup, closePopup, closePopupWithOverlay, closePopupWithEscape} from '../components/modal.js';
 
 const popups = document.querySelectorAll('.popup');
 const placesList = document.querySelector('.places__list');
 const profileAddButton = document.querySelector('.profile__add-button');
 const popupTypeNewCard = document.querySelector('.popup_type_new-card');
 const profileEditButton = document.querySelector('.profile__edit-button');
+const popupImage = document.querySelector('.popup__image');
+const popupCaption = document.querySelector('.popup__caption');
 const popupTypeEdit = document.querySelector('.popup_type_edit');
 const popupForm = document.querySelector('.popup__form');
 const inputTypeName = popupForm.querySelector('.popup__input_type_name');
@@ -16,19 +18,49 @@ const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const editProfile = document.forms['edit-profile'];
 const newPlace = document.forms['new-place'];
+const inputTypeCardName = document.querySelector('.popup__input_type_card-name');
+const inputTypeURL = document.querySelector('.popup__input_type_url'); 
 
 profileAddButton.addEventListener('click', () => openPopup(popupTypeNewCard),);
-profileEditButton.addEventListener('click', () => openPopup(popupTypeEdit));
+profileEditButton.addEventListener('click', () => {
+  inputTypeName.value = profileTitle.textContent;
+  inputTypeDescription.value = profileDescription.textContent;
+  openPopup(popupTypeEdit);
+});
 editProfile.addEventListener('submit', changeProfile);
 newPlace.addEventListener('submit', addNewCard); 
 
-initialCards.forEach(cardData => {placesList.append(createCard(cardData, ImgView));});
-
-inputTypeName.value = profileTitle.textContent;
-inputTypeDescription.value = profileDescription.textContent;
+initialCards.forEach(cardData => {placesList.append(createCard(cardData, showImgView));});
 
 popups.forEach(popup => {
     const popupClose = popup.querySelector('.popup__close')
     popupClose.addEventListener('click', () => closePopup(popup));
     popup.addEventListener('click', closePopupWithOverlay);
+    popup.addEventListener('click', closePopupWithEscape);
   });
+
+export function showImgView(cardData, popupTypeImage) {
+  popupImage.src = cardData.link;
+  popupImage.alt = cardData.name;
+  popupCaption.textContent = cardData.name;
+  openPopup(popupTypeImage);
+}
+function changeProfile(evt) {
+  evt.preventDefault();
+  profileTitle.textContent = inputTypeName.value;
+  profileDescription.textContent = inputTypeDescription.value;
+  closePopup(popupTypeEdit);
+}
+
+function addNewCard(evt) {
+  evt.preventDefault();
+  const cardData = {
+    name: inputTypeCardName.value,
+    link: inputTypeURL.value,
+  }
+  const card = createCard(cardData, showImgView);
+  const popupTypeNewCard = document.querySelector('.popup_type_new-card');
+  placesList.prepend(card);
+  evt.target.reset();
+  closePopup(popupTypeNewCard);
+}

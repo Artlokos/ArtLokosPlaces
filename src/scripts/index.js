@@ -32,3 +32,4 @@ popups.forEach(popup => {
     popupClose.addEventListener('click', () => closePopup(popup));
     popup.addEventListener('click', closePopupWithOverlay);
   });
+

@@ -64,3 +64,14 @@ function addNewCard(evt) {
   evt.target.reset();
   closePopup(popupTypeNewCard);
 }
+
+const formElement = document.querySelector('.popup__form');
+const formInput = formElement.querySelector('.popup__input');
+
+formElement.addEventListener('submit', (evt)=> {
+  evt.preventDefault();
+});
+
+formInput.addEventListener('input', (evt)=>{
+  console.log(evt.target.validity.valid);
+});

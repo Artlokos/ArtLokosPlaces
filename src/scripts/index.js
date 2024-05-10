@@ -36,9 +36,9 @@ popups.forEach(popup => {
     const popupClose = popup.querySelector('.popup__close')
     popupClose.addEventListener('click', () => closePopup(popup));
     popup.addEventListener('click', closePopupWithOverlay);
-    popup.addEventListener('click', closePopupWithEscape);
   });
 
+<<<<<<< HEAD
 export function showImgView(cardData, popupTypeImage) {
   popupImage.src = cardData.link;
   popupImage.alt = cardData.name;
@@ -75,3 +75,5 @@ formElement.addEventListener('submit', (evt)=> {
 formInput.addEventListener('input', (evt)=>{
   console.log(evt.target.validity.valid);
 });
+=======
+>>>>>>> 2c2a81d3398793f2c07f625a99a83e13b3e140cb

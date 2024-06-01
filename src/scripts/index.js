@@ -99,7 +99,6 @@ const hideInputError = (formElement, inputElement) => {
 };
 
 const hasInvalidInput = (inputList) => {
-  
   return inputList.some((inputElement) => {
     console.dir(inputElement.validity);
     return !inputElement.validity.valid;
@@ -107,7 +106,7 @@ const hasInvalidInput = (inputList) => {
 };
 
 const toggleButtonState = (inputList, buttonElement) => {
-  console.dir(hasInvalidInput)
+  // console.dir(hasInvalidInput(inputElement))
   debugger
   if (hasInvalidInput(inputList)) {
     buttonElement.disabled = true;

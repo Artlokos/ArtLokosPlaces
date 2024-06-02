@@ -4,10 +4,10 @@ import {createCard} from '../components/сard.js';
 import {openPopup, closePopup, closePopupWithOverlay, closePopupWithEscape} from '../components/modal.js';
 import {enableValidation} from '../components/validate.js';
 import {validationConfig} from '../components/config.js';
-import { getInitialCards, getUserInfo } from '../components/api.js';
+import { getInitialCards, getUserInfo, SendNewAccountData,SendNewCardtData } from '../components/api.js';
 // --Объявляем константы--
 const popups = document.querySelectorAll('.popup');
-const placesList = document.querySelector('.places__list');
+export const placesList = document.querySelector('.places__list');
 const profileAddButton = document.querySelector('.profile__add-button');
 const popupTypeNewCard = document.querySelector('.popup_type_new-card');
 const profileEditButton = document.querySelector('.profile__edit-button');
@@ -39,9 +39,6 @@ editProfile.addEventListener('submit', changeProfile);
 
 newPlace.addEventListener('submit', addNewCard); 
 // ___________________________________________________________________
-initialCards.forEach(cardData => {
-  placesList.append(createCard(cardData, showImgView));
-  });
 
 popups.forEach(popup => {
     const popupClose = popup.querySelector('.popup__close')
@@ -83,3 +80,5 @@ enableValidation(validationConfig);
 //_Работа с API
 getUserInfo();
 getInitialCards();
+SendNewAccountData();
+// SendNewCardtData();

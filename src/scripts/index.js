@@ -2,8 +2,9 @@ import '../pages/index.css'
 import {initialCards} from './cards.js';
 import {createCard} from '../components/сard.js';
 import {openPopup, closePopup, closePopupWithOverlay, closePopupWithEscape} from '../components/modal.js';
-// import { has } from 'core-js/core/dict';
-// import {} from '../components/validate.js';
+import {enableValidation} from '../components/validate.js';
+import {validationConfig} from '../components/config.js';
+import { getInitialCards, getUserInfo } from '../components/api.js';
 // --Объявляем константы--
 const popups = document.querySelectorAll('.popup');
 const placesList = document.querySelector('.places__list');
@@ -22,6 +23,8 @@ const editProfile = document.forms['edit-profile'];
 const newPlace = document.forms['new-place'];
 const inputTypeCardName = document.querySelector('.popup__input_type_card-name');
 const inputTypeURL = document.querySelector('.popup__input_type_url'); 
+
+let userID = null;
 
 // --Добавляем слушатели событий на элементы
 profileAddButton.addEventListener('click', () => openPopup(popupTypeNewCard),);
@@ -73,72 +76,10 @@ function addNewCard(evt) {
   closePopup(popupTypeNewCard);
 }
 
-// Код валидации _______________________________________________________________________________________
-const formElement = document.querySelector('.popup__form');
-const inputElement = formElement.querySelector('.popup__input');
+// Вызов функции валидации _______________________________________________________________________________________
 
+enableValidation(validationConfig);
 
-const enableValidation = () => {
-  const formList = Array.from(document.querySelectorAll('.popup__form'));
-  formList.forEach((formElement) => {
-    formElement.addEventListener('submit', (evt) => {
-      evt.preventDefault;
-    });
-    setEventListeners(formElement);
-  });
-};
-
-const setEventListeners = (formElement) =>{
-  const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-  const buttonElement = formElement.querySelector('.popup__button');
-
-  toggleButtonState(inputList,buttonElement);
-
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener('input', () => {
-      checkInputValidity(formElement,inputElement);
-      toggleButtonState(inputList,buttonElement);
-    });
-  });
-};
-
-const checkInputValidity = () => {
-  if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
-  } else {
-    hideInputError(formElement, inputElement);
-  }
-  };
-
-function showInputError(formElement,inputElement, errorMessage) {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__input-error_active');
-};
-
-const hideInputError = (formElement,inputElement) => {
-  let a = `.${inputElement.classList[1]}-error`;
-  const errorElement = formElement.querySelector(a);
-// inputElement.classList.remove('popup__input_type_error');
-  errorElement.classList.remove('popup__input-error_active');
-  errorElement.textContent = '';
-};
-
-function toggleButtonState(inputList,buttonElement) {
-  if (hasInvalidInput(inputList)) {
-    buttonElement.disabled = true;
-    buttonElement.classList.add('popup__button_inactive');
-  } else {
-    buttonElement.disabled = false;
-    buttonElement.classList.remove('popup__button_inactive');
-  }
-};
-
-function hasInvalidInput (inputList) {
-  return inputList.some(function(inputElement){return !inputElement.validity.valid});
-}
-
-
-
-enableValidation();
+//_Работа с API
+getUserInfo();
+getInitialCards();

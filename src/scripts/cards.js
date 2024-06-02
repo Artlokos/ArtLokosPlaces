@@ -1,3 +1,7 @@
+import {getInitialCards} from '../components/api.js'
+
+// export const initialCards = getInitialCards();
+
 export const initialCards = [
     {
       name: "Архыз",

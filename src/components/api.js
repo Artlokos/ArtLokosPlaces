@@ -1,5 +1,7 @@
-import {createCard} from '../components/сard.js';
+import {createCard} from './card.js';
 import {showImgView, placesList} from '../scripts/index.js';
+
+let userID = null;
 
 const config = {
     baseUrl: 'https://nomoreparties.co/v1/wff-cohort-15',
@@ -9,6 +11,7 @@ const config = {
     }
   }
 
+  // Геттеры
   export function getUserInfo() {
     return fetch (`${config.baseUrl}/users/me`, {
       headers: config.headers,
@@ -20,6 +23,7 @@ const config = {
                         console.log(data.about);
                         console.log(data.avatar);
                         console.log(data._id);
+                        userID = data._id;
                       });
     }
     
@@ -38,7 +42,7 @@ export function getInitialCards()
 
                   .then( (result) => {
                                       result.forEach(cardData => {
-                                                                    placesList.append(createCard(cardData, showImgView));
+                                                                    placesList.append(createCard(cardData, showImgView, userID));
                                                                  }
                                                     );
                                      }
@@ -49,6 +53,8 @@ export function getInitialCards()
   };
 
   
+
+// Сеттеры  
 export function SendNewAccountData () {
   return fetch (`${config.baseUrl}/users/me`, {
   method: 'PATCH',
@@ -67,6 +73,18 @@ export function SendNewCardtData () {
   body: JSON.stringify({
     name: 'Архангельск',
     link: 'http://gas-kvas.com/grafic/uploads/posts/2024-01/gas-kvas-com-p-oboi-goroda-arkhangelsk-11.jpg'
+  })
+});
+}
+
+export function deleteOwnCard () {
+  return fetch (`${config.baseUrl}/cards`, {
+  method: 'DELETE',
+  headers: config.headers,
+  body: JSON.stringify({
+    name: 'Архангельск',
+    link: 'http://gas-kvas.com/grafic/uploads/posts/2024-01/gas-kvas-com-p-oboi-goroda-arkhangelsk-11.jpg',
+    _id:2,
   })
 });
 }

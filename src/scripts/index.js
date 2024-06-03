@@ -1,6 +1,6 @@
 import '../pages/index.css'
 import {initialCards} from './cards.js';
-import {createCard} from '../components/сard.js';
+import {createCard} from '../components/card.js';
 import {openPopup, closePopup, closePopupWithOverlay, closePopupWithEscape} from '../components/modal.js';
 import {enableValidation} from '../components/validate.js';
 import {validationConfig} from '../components/config.js';
@@ -28,7 +28,6 @@ let userID = null;
 
 // --Добавляем слушатели событий на элементы
 profileAddButton.addEventListener('click', () => openPopup(popupTypeNewCard),);
-
 profileEditButton.addEventListener('click', () => {
   inputTypeName.value = profileTitle.textContent;
   inputTypeDescription.value = profileDescription.textContent;

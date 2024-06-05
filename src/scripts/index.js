@@ -27,8 +27,8 @@ profileEditButton.addEventListener('click', () => {
   inputTypeDescription.value = profileDescription.textContent;
   openPopup(popupTypeEdit);
 });
-// editProfile.addEventListener('submit', changeProfile);
-// newPlace.addEventListener('submit', addNewCard); 
+editProfile.addEventListener('submit', changeProfile);
+newPlace.addEventListener('submit', addNewCard); 
 
 initialCards.forEach(cardData => {placesList.append(createCard(cardData, showImgView));});
 

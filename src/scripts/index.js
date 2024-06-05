@@ -1,5 +1,5 @@
 import '../pages/index.css'
-import {initialCards} from './cards.js';
+// import {initialCards} from './cards.js';
 import {createCard} from '../components/card.js';
 import {openPopup, closePopup, closePopupWithOverlay, closePopupWithEscape} from '../components/modal.js';
 import {enableValidation} from '../components/validate.js';
@@ -22,12 +22,21 @@ const profileDescription = document.querySelector('.profile__description');
 const editProfile = document.forms['edit-profile'];
 const newPlace = document.forms['new-place'];
 const inputTypeCardName = document.querySelector('.popup__input_type_card-name');
-const inputTypeURL = document.querySelector('.popup__input_type_url'); 
+const inputTypeURL = document.querySelector('.popup__input_type_url');
+
+const popupForDelete = document.querySelector('.popup_type_сonfirm-delete');
+const popupButtonForDelete = popupForDelete.querySelector('.popup__button');
+
+const popupTypeUpdateAvatarIcon = document.querySelector('.popup_type_update-avatar-icon');
+const linkForUpdateAvatar = popupTypeUpdateAvatarIcon.querySelector('popup__input_type_url_update-avatar-icon')
+const buttonSaveAvatar = popupTypeUpdateAvatarIcon.querySelector('.popup__button');
+
 
 let userID = null;
 
 // --Добавляем слушатели событий на элементы
 profileAddButton.addEventListener('click', () => openPopup(popupTypeNewCard),);
+
 profileEditButton.addEventListener('click', () => {
   inputTypeName.value = profileTitle.textContent;
   inputTypeDescription.value = profileDescription.textContent;
@@ -81,3 +90,5 @@ getUserInfo();
 getInitialCards();
 SendNewAccountData();
 // SendNewCardtData();
+
+//Удаление карточки с сервера

@@ -1,13 +1,12 @@
 import '../pages/index.css'
-// import {initialCards} from './cards.js';
 import {createCard} from '../components/card.js';
 import {openPopup, closePopup, closePopupWithOverlay, closePopupWithEscape} from '../components/modal.js';
 import {enableValidation} from '../components/validate.js';
 import {validationConfig} from '../components/config.js';
-import { getInitialCards, getUserInfo, SendNewAccountData,SendNewCardtData } from '../components/api.js';
+import { getInitialCards, getUserInfo, SendNewAccountData, SendNewCardtData, deleteOwnCard, addLikeOnCard, deleteLikeOnCard } from '../components/api.js';
 // --Объявляем константы--
 const popups = document.querySelectorAll('.popup');
-export const placesList = document.querySelector('.places__list');
+const placesList = document.querySelector('.places__list');
 const profileAddButton = document.querySelector('.profile__add-button');
 const popupTypeNewCard = document.querySelector('.popup_type_new-card');
 const profileEditButton = document.querySelector('.profile__edit-button');
@@ -19,6 +18,7 @@ const inputTypeName = popupForm.querySelector('.popup__input_type_name');
 const inputTypeDescription = popupForm.querySelector('.popup__input_type_description');
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
+const profileImage = document.querySelector('.profile__image');
 const editProfile = document.forms['edit-profile'];
 const newPlace = document.forms['new-place'];
 const inputTypeCardName = document.querySelector('.popup__input_type_card-name');
@@ -32,7 +32,20 @@ const linkForUpdateAvatar = popupTypeUpdateAvatarIcon.querySelector('popup__inpu
 const buttonSaveAvatar = popupTypeUpdateAvatarIcon.querySelector('.popup__button');
 
 
-let userID = null;
+let user = null;
+
+Promise.all([getUserInfo(), getInitialCards()])
+.then(([userDataFromServer,cardsFromServer]) => {
+  user = userDataFromServer;
+  profileTitle.textContent = user.name;
+  profileDescription.textContent = user.about;
+  profileImage.style.backgroundImage = ('url(' + user.avatar + ')');
+  cardsFromServer.forEach((allDataForCardFromServer)=> {
+    const cardTemplate = createCard(user,allDataForCardFromServer, addLikeOnCard,deleteLikeOnCard,showImgView,openPopupForDeleteCard);
+    placesList.prepend(cardTemplate);
+  });
+})
+.catch((err) => console.log(err));
 
 // --Добавляем слушатели событий на элементы
 profileAddButton.addEventListener('click', () => openPopup(popupTypeNewCard),);
@@ -81,14 +94,29 @@ function addNewCard(evt) {
   closePopup(popupTypeNewCard);
 }
 
+function openPopupForDeleteCard(cardData) {
+  openPopup(popupForDelete);
+  popupButtonForDelete.addEventListener('click', () => confirmDeleteCard(cardData));
+}
+
 // Вызов функции валидации _______________________________________________________________________________________
 
 enableValidation(validationConfig);
 
 //_Работа с API
-getUserInfo();
-getInitialCards();
-SendNewAccountData();
+
+
+
+// SendNewAccountData();
 // SendNewCardtData();
 
 //Удаление карточки с сервера
+
+function confirmDeleteCard(cardElement) {
+  deleteOwnCard(cardElement).then(()=> {
+  console.dir(cardElement);
+  cardElement.remove();
+  closeModal(popupForDelete);
+    }
+  );
+};

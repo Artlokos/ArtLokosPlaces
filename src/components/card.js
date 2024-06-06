@@ -18,25 +18,31 @@ export function createCard(user,allDataForCardFromServer, addLikeOnCard,deleteLi
     if (like._id == user._id) {
      cardLikeButton.classList.add('card__like-button_is-active');       
      }
-   })
+   });
 
   cardLikeButton.addEventListener ('click', () =>
   {
 
-    allDataForCardFromServer.likes.forEach(like => {
-      if (like._id == user._id) {
-        addLikeOnCard(allDataForCardFromServer).then( ()=> {
-            cardLikesCountFromBrowser.innerHTML = allDataForCardFromServer.likes.length;
-            rebindLike(cardLikeButton);} 
+  const hasLike =  allDataForCardFromServer.likes.some((like) => {
+    return like._id === user._id
+  })
 
-        )}else {
-            deleteLikeOnCard(allDataForCardFromServer).then( () => 
-              {
-                cardLikesCountFromBrowser.innerHTML = allDataForCardFromServer.likes.length;
-                rebindLike(cardLikeButton);
-              })
+      if (hasLike) {
+        deleteLikeOnCard(allDataForCardFromServer).then( (newCardData) => 
+          {
+            allDataForCardFromServer = newCardData;
+            cardLikesCountFromBrowser.innerHTML = allDataForCardFromServer.likes.length;
+            rebindLike(cardLikeButton);
+          })
+
+      } else {
+              addLikeOnCard(allDataForCardFromServer).then( (newCardData)=> 
+            {
+              allDataForCardFromServer = newCardData;
+              cardLikesCountFromBrowser.innerHTML = allDataForCardFromServer.likes.length;
+              rebindLike(cardLikeButton);
+            })
           }
-     })
   });
 
   cardImage.addEventListener('click', () => showImgView(allDataForCardFromServer, bigImage));
@@ -46,7 +52,8 @@ if(allDataForCardFromServer.owner._id == user._id) {
       else {
         cardDeleteButton.hidden = true;
       }
+
+const rebindLike= (cardLikeButton) => {cardLikeButton.classList.toggle('card__like-button_is-active');}
+      
 return card;
 }
-
-export function rebindLike(cardLikeButton) {cardLikeButton.classList.toggle('card__like-button_is-active');}

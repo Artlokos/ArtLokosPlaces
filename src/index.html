@@ -60,6 +60,28 @@
     </div>
   </div>
 
+  <div class="popup popup_type_сonfirm-delete popup_is-animated">
+    <div class="popup__content">
+      <button type="button" class="popup__close"></button>
+      <h3 class="popup__title">Вы уверены?</h3>
+      <form class="popup__form" name="сonfirm-delete" novalidate>
+        <button type="submit" class="button popup__button">Да</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="popup popup_type_update-avatar-icon popup_is-animated">
+    <div class="popup__content">
+      <button type="button" class="popup__close"></button>
+      <h3 class="popup__title">Обновить аватар</h3>
+      <form class="popup__form" name="update-avatar-icon" novalidate>
+        <input type="url" id="popup__input_type_url_update-avatar-icon" name="popup__input_type_url_update-avatar-icon" class="popup__input popup__input_type_url_update-avatar-icon" placeholder="Ссылка на картинку" required>
+        <span class="popup__input_type_url_update-avatar-icon-error"></span>
+        <button type="submit" class="button popup__button">Сохранить</button>
+      </form>
+    </div>
+  </div>
+
   <div class="popup popup_type_image popup_is-animated">
     <div class="popup__content popup__content_content_image">
       <button type="button" class="popup__close"></button>
@@ -78,7 +100,7 @@
       </h2>
       <div class="card__like-container">
       <button type="button" class="card__like-button"></button>
-      <span class="card__likes-count">1</span>
+      <span class="card__likes-count"></span>
     </div>
     </div>
   </li>

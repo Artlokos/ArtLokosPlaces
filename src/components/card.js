@@ -25,7 +25,7 @@ export function createCard(cardData, showImgView, cardOwner){
 }
 
 export function deleteCard(card) {
-  deleteOwnCard(cardData)
+  deleteOwnCard(card)
   card.remove();
 
 }

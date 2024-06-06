@@ -75,12 +75,14 @@ export function showImgView(cardData, popupTypeImage) {
   popupCaption.textContent = cardData.name;
   openPopup(popupTypeImage);
 }
+
 function changeProfile(evt) {
   evt.preventDefault();
   profileTitle.textContent = inputTypeName.value;
   profileDescription.textContent = inputTypeDescription.value;
   closePopup(popupTypeEdit);
 }
+
 function addNewCard(evt) {
   evt.preventDefault();
   const cardData = {
@@ -103,18 +105,32 @@ function openPopupForDeleteCard(cardData) {
 
 enableValidation(validationConfig);
 
-//_Работа с API
+function updateProfileImage(){
+  const linkProfileImage = linkForUpdateAvatar.value;
 
+  labelForWaitingButton(buttonSaveAvatar,true);
 
+  changeProfileImage(linkProfileImage).then((data)=>{
+    profileImage.style.backgroundImage = ('url(' + data.avatar + ')');
+    linkForUpdateAvatar.value = '';
+    closePopup(popupTypeUpdateAvatarIcon);
+  })
+  .catch((err) => console.log(err))
+  .finally(()=>{labelForWaitingButton(buttonSaveAvatar, false)})
+};
 
-// SendNewAccountData();
-// SendNewCardtData();
+function labelForWaitingButton(button,condition) {
+  if(condition) {
+    button.textContent = 'Сохранение...';
+  } else {
+    button.textContent = 'Сохранить';
+  }
+}
 
 //Удаление карточки с сервера
 
 function confirmDeleteCard(cardElement) {
   deleteOwnCard(cardElement).then(()=> {
-  console.dir(cardElement);
   cardElement.remove();
   closeModal(popupForDelete);
     }

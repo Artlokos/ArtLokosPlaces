@@ -82,3 +82,17 @@ export function deleteLikeOnCard(cardData) {
     return response.json();
   })
 };
+
+export function changeProfileImage (imageLink) {
+  let adress = `${config.baseUrl}/users/me/avatar`;
+  return fetch (adress, {
+    method:'PATCH',
+    headers: config.headers,
+    body: JSON.stringify({
+      avatar: imageLink
+  })
+  .then (response => {
+    return response.json();
+  })
+})
+}

@@ -1,14 +1,14 @@
   
 import {validationConfig} from './config.js';
 
-const showInputError = (formElement, inputElement, errorMessage) => {
+  const showInputError = (formElement, inputElement, errorMessage) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add(validationConfig.inputErrorClass);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(validationConfig.errorClass);
 };
 
-const hideInputError = (formElement, inputElement) => {
+  const hideInputError = (formElement, inputElement) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.remove(validationConfig.inputErrorClass);
   errorElement.classList.remove(validationConfig.errorClass);

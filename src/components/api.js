@@ -24,7 +24,6 @@ export const config = {
     }
     return fetch (url, options)
       .then(handleResponse)
-      .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
     }
     
     
@@ -53,7 +52,7 @@ export function updateAccountData (name, description) {
   }
   return fetch (url,options)
   .then(handleResponse)
-  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})}
+}
 
 export function updateProfileImage (imageLink) {
   const url = `${config.baseUrl}/users/me/avatar`
@@ -66,7 +65,7 @@ export function updateProfileImage (imageLink) {
   }
   return fetch (url, options)
   .then(handleResponse)
-  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})}
+}
 
 export function sendNewCardData (cardData) {
   const url = `${config.baseUrl}/cards`
@@ -82,7 +81,7 @@ export function sendNewCardData (cardData) {
   }
   return fetch (url, options )
   .then(handleResponse)
-  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})}
+}
 
 export function sendServerDeleteCard (cardData) {
   const url = `${config.baseUrl}/cards/${cardData._id}`
@@ -92,7 +91,7 @@ export function sendServerDeleteCard (cardData) {
   }
   return fetch (url, options)
   .then(handleResponse)
-  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})}
+}
 
 export function addLikeOnCard(cardData) {
   const url = `${config.baseUrl}/cards/likes/${cardData._id}`
@@ -102,7 +101,7 @@ export function addLikeOnCard(cardData) {
   }
   return fetch (url, options)
   .then(handleResponse)
-  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})}
+}
 
 export function deleteLikeOnCard(cardData) {
   const url = `${config.baseUrl}/cards/likes/${cardData._id}`
@@ -112,5 +111,5 @@ export function deleteLikeOnCard(cardData) {
   }
   return fetch (url, options )
   .then(handleResponse)
-  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})}
+}
 

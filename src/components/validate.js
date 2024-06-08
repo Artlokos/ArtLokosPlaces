@@ -65,19 +65,19 @@ export const enableValidation = (validationConfig) => {
   });
 };
 
-export const clearValidation = (formElement, enableValidation) => {
+export const clearValidation = (formElement, validationConfig) => {
 
-  const inputList = Array.from(formElement.querySelectorAll(enableValidation.inputSelector));
-  const buttonElement = formElement.querySelector(enableValidation.submitButtonSelector);
+  const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
+  const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
 
-  toggleButtonState(inputList, buttonElement, enableValidation.inactiveButtonClass);
+  toggleButtonState(inputList, buttonElement, validationConfig.inactiveButtonClass);
 
   inputList.forEach((inputElement) => {
     hideInputError(
       formElement, 
       inputElement, 
-      enableValidation.inputErrorClass, 
-      enableValidation.errorClass
+      validationConfig.inputErrorClass, 
+      validationConfig.errorClass
       );
     inputElement.setCustomValidity("");
   });

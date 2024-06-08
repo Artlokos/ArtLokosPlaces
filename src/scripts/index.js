@@ -36,6 +36,10 @@ const buttonSaveAvatar = formUpdateAvatarIcon.querySelector('.popup__button');
 
 let user = null
 
+// Вызов функции валидации _______________________________________________________________________________________
+
+enableValidation(validationConfig)
+
 // --Вешаем слушатели на попапы
 
 popups.forEach(popup => {
@@ -96,7 +100,7 @@ function changeProfile(evt) {
   profileTitle.textContent = inputTypeName.value
   profileDescription.textContent = inputTypeDescription.value
   sendServerChangeProfile(inputTypeName.value,inputTypeDescription.value)
-  clearValidation(popupTypeEditProfile,enableValidation)
+  clearValidation(formEditProfile,validationConfig)
 }
 
 function sendServerChangeProfile(name, description) {
@@ -120,7 +124,7 @@ function addNewCard(evt) {
   }
   sendServerNewCard(cardData)
   evt.target.reset()
-  clearValidation(popupTypeNewCard,enableValidation)
+  clearValidation(formNewPlace,validationConfig)
 }
 
 function sendServerNewCard(cardData) {
@@ -163,14 +167,6 @@ function sendServerUserAvatar(link) {
     closePopup(popupTypeUpdateAvatarIcon)
 })
 }
-
-
-
-// Вызов функции валидации _______________________________________________________________________________________
-
-enableValidation(validationConfig)
-
-
 
 function labelForWaitingButton(button,condition) {
   if(condition) {

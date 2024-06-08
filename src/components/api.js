@@ -5,103 +5,115 @@ export const config = {
       'Content-Type': 'application/json'
     }
   }
+  const handleResponse = (res) => {
+    if (res.ok) {return res.json()}
+    return res.json()
+      .then ((err) => {
+        err.httpResponseCode = res.status
+        return Promise.reject(err)
+      })
+  }
 
   // Геттеры
   export function getUserInfo() {
-    return fetch (`${config.baseUrl}/users/me`, {
-      headers: config.headers,
-    })
-      .then(res => {if (res.ok) {return res.json();}
-                                 return Promise.reject(`Что-то пошло не так: ${res.status}`);})
-      .then((data) => {
-                        return data;
-                      });
+    const url = `${config.baseUrl}/users/me`
+    const options = {
+      method: 'GET',
+      headers: config.headers
+    }
+    return fetch (url, options)
+    // .then (res => {if (res.ok) { return res.json();}
+    // return Promise.reject(`Что-то пошло не так: ${res.status}`);})
+      .then(handleResponse)
+      // .then((data) => {
+      //                   return data
+      //                 })
     }
     
-export function getInitialCards() 
-  {return fetch (`${config.baseUrl}/cards`,{headers: config.headers})
-    .then (res => {if (res.ok) { return res.json();}
-                  return Promise.reject(`Что-то пошло не так: ${res.status}`);})
+export function getInitialCards() {
+    const url = `${config.baseUrl}/cards`
+    const options = {
+      method: 'GET',
+      headers: config.headers
+    }
+  return fetch (url, options)
+    // .then (res => {if (res.ok) { return res.json();}
+    //               return Promise.reject(`Что-то пошло не так: ${res.status}`);})
+    .then(handleResponse)
     .then( (dataInitialCards) => {return dataInitialCards;})
     .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})};
-
-  
+ 
 
 // Сеттеры  
 export function SendNewAccountData (name, description) {
-  return fetch (`${config.baseUrl}/users/me`, {
+  const url = `${config.baseUrl}/users/me`
+  const options = {
   method: 'PATCH',
   headers: config.headers,
   body: JSON.stringify({
     name: name,
     about: description
     })
-  })
+  }
+  return fetch (url,options)
+  .then(handleResponse)
 }
 
 export function changeProfileImage (imageLink) {
-  let adress = `${config.baseUrl}/users/me/avatar`;
-  return fetch (adress, {
+  const url = `${config.baseUrl}/users/me/avatar`
+  const options = {
     method:'PATCH',
     headers: config.headers,
     body: JSON.stringify({
       avatar: imageLink
     })
-  })
+  }
+  return fetch (url, options)
+  .then(handleResponse)
 }
 
-export function SendNewCardtData () {
-  return fetch (`${config.baseUrl}/cards`, {
-  method: 'POST',
-  headers: config.headers,
-  body: JSON.stringify({
-    name: 'Архангельск',
-    link: 'https://travelsoul.ru/wp-content/uploads/e/d/3/ed341b39b377919be4cb4f960fd35db3.jpeg'
-  })
-});
+export function SendNewCardtData (name,link) {
+  const url = `${config.baseUrl}/cards`
+  const options = {
+    method: 'POST',
+    headers: config.headers,
+    body: JSON.stringify({
+      name: name,
+      link: link
+      // name: 'Архангельск',
+      // link: 'https://travelsoul.ru/wp-content/uploads/e/d/3/ed341b39b377919be4cb4f960fd35db3.jpeg'
+    })
+  }
+  return fetch (url, options )
+  .then(handleResponse)
 }
 
 export function deleteOwnCard (cardData) {
-  let adress = `${config.baseUrl}/cards/${cardData._id}`;
-    return fetch (adress, {
+  const url = `${config.baseUrl}/cards/${cardData._id}`
+  const options = {
     method: 'DELETE',
     headers: config.headers
-  })
-  .then(response => {
-    return response.json();
-  })
-};
+  }
+  return fetch (url, options)
+  .then(handleResponse)
+}
 
 export function addLikeOnCard(cardData) {
-  let adress = `${config.baseUrl}/cards/likes/${cardData._id}`;
-  return fetch (adress, {
+  const url = `${config.baseUrl}/cards/likes/${cardData._id}`
+  const options = {
     method:'PUT',
     headers: config.headers
-  })
-  .then(response => {
-    return response.json();
-  })
-};
+  }
+  return fetch (url, options)
+  .then(handleResponse)
+}
 
 export function deleteLikeOnCard(cardData) {
-  let adress = `${config.baseUrl}/cards/likes/${cardData._id}`;
-  return fetch (adress, {
+  const url = `${config.baseUrl}/cards/likes/${cardData._id}`
+  const options = {
     method:'DELETE',
     headers: config.headers
-  })
-  .then(response => {
-    return response.json();
-  })
-};
-
-
-// export function SendNewAccountData (name, description) {
-//   return fetch (`${config.baseUrl}/users/me`, {
-//   method: 'PATCH',
-//   headers: config.headers,
-//   body: JSON.stringify({
-//     name: name,
-//     about: description
-//   })
-// });
-// }
+  }
+  return fetch (url, options )
+  .then(handleResponse)
+}

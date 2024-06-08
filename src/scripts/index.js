@@ -32,10 +32,6 @@ const linkForUpdateAvatar = popupTypeUpdateAvatarIcon.querySelector('.popup__inp
 const buttonSaveAvatar = popupTypeUpdateAvatarIcon.querySelector('.popup__button');
 
 
-function hoverProfile() {
-
-}
-
 SendNewAccountData('Art Lokos','I am Art Lokos');
 
 let user = null;
@@ -47,7 +43,13 @@ Promise.all([getUserInfo(), getInitialCards()])
   profileDescription.textContent = user.about;
   profileImage.style.backgroundImage = ('url(' + user.avatar + ')');
   cardsFromServer.forEach((allDataForCardFromServer)=> {
-    const cardTemplate = createCard(user,allDataForCardFromServer, addLikeOnCard,deleteLikeOnCard,showImgView,openPopupForDeleteCard);
+    const cardTemplate = createCard(
+      user,
+      allDataForCardFromServer, 
+      addLikeOnCard,
+      deleteLikeOnCard,
+      showImgView,
+      openPopupForDeleteCard);
     placesList.prepend(cardTemplate);
   });
 })
@@ -134,7 +136,7 @@ function confirmDeleteCard(cardElement) {
 
 function popupChangeProfileImage () {
   openPopup(popupTypeUpdateAvatarIcon);
-  buttonSaveAvatar.addEventListener('click', ()=> updateProfileImage(linkForUpdateAvatar))
+  buttonSaveAvatar.addEventListener('click', () => updateProfileImage(linkForUpdateAvatar))
 
 }
 
@@ -147,12 +149,12 @@ function updateProfileImage(linkForUpdateAvatar){
     labelForWaitingButton(buttonSaveAvatar,true);
   
     changeProfileImage(linkProfileImage)
-    // .then((data)=>{
-      // profileImage.style.backgroundImage = ('url(' + data.avatar + ')');
-      profileImage.style.backgroundImage = ('url(' + linkProfileImage + ')');
+    .then((data)=>{
+      console.dir(data)
+      profileImage.style.backgroundImage = ('url(' + data.avatar + ')');
       linkForUpdateAvatar.value = '';
       closePopup(popupTypeUpdateAvatarIcon);
-    // })
-    // .catch((err) => console.log(err))
-    // .finally(()=>{labelForWaitingButton(buttonSaveAvatar, false)})
+    })
+    .catch((err) => console.log(err))
+    .finally(()=>{labelForWaitingButton(buttonSaveAvatar, false)})
   };

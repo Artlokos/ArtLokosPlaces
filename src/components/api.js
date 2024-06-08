@@ -52,6 +52,7 @@ export function updateAccountData (name, description) {
   }
   return fetch (url,options)
   .then(handleResponse)
+  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
 export function updateProfileImage (imageLink) {
@@ -65,6 +66,7 @@ export function updateProfileImage (imageLink) {
   }
   return fetch (url, options)
   .then(handleResponse)
+  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
 export function sendNewCardData (cardData) {
@@ -75,12 +77,11 @@ export function sendNewCardData (cardData) {
     body: JSON.stringify({
       name: cardData.name,
       link: cardData.link
-      // name: 'Архангельск',
-      // link: 'https://travelsoul.ru/wp-content/uploads/e/d/3/ed341b39b377919be4cb4f960fd35db3.jpeg'
     })
   }
   return fetch (url, options )
   .then(handleResponse)
+  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
 export function sendServerDeleteCard (cardData) {
@@ -91,6 +92,7 @@ export function sendServerDeleteCard (cardData) {
   }
   return fetch (url, options)
   .then(handleResponse)
+  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
 export function addLikeOnCard(cardData) {
@@ -101,6 +103,7 @@ export function addLikeOnCard(cardData) {
   }
   return fetch (url, options)
   .then(handleResponse)
+  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
 export function deleteLikeOnCard(cardData) {
@@ -111,5 +114,6 @@ export function deleteLikeOnCard(cardData) {
   }
   return fetch (url, options )
   .then(handleResponse)
+  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 

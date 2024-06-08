@@ -5,6 +5,7 @@ export const config = {
       'Content-Type': 'application/json'
     }
   }
+
   const handleResponse = (res) => {
     if (res.ok) {return res.json()}
     return res.json()
@@ -34,11 +35,11 @@ export function getInitialCards() {
   return fetch (url, options)
     .then(handleResponse)
     .then( (dataInitialCards) => {return dataInitialCards;})
-    .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})};
+    .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})}
  
 
 // Сеттеры  
-export function SendNewAccountData (name, description) {
+export function updateAccountData (name, description) {
   const url = `${config.baseUrl}/users/me`
   const options = {
   method: 'PATCH',
@@ -52,7 +53,7 @@ export function SendNewAccountData (name, description) {
   .then(handleResponse)
 }
 
-export function changeProfileImage (imageLink) {
+export function updateProfileImage (imageLink) {
   const url = `${config.baseUrl}/users/me/avatar`
   const options = {
     method:'PATCH',
@@ -65,7 +66,7 @@ export function changeProfileImage (imageLink) {
   .then(handleResponse)
 }
 
-export function SendNewCardtData (name,link) {
+export function sendNewCardData (name,link) {
   const url = `${config.baseUrl}/cards`
   const options = {
     method: 'POST',

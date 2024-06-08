@@ -1,7 +1,7 @@
 import '../pages/index.css'
 import {createCard} from '../components/card.js';
 import {openPopup, closePopup, closePopupWithOverlay, closePopupWithEscape} from '../components/modal.js';
-import {enableValidation} from '../components/validate.js';
+import {enableValidation,clearValidation} from '../components/validate.js';
 import {validationConfig} from '../components/config.js';
 import { getInitialCards, getUserInfo, updateAccountData, sendNewCardData, deleteOwnCard, addLikeOnCard, deleteLikeOnCard,updateProfileImage } from '../components/api.js';
 // --Объявляем константы--
@@ -29,9 +29,6 @@ const inputTypeDescription = formEditProfile.querySelector('.popup__input_type_d
 const formNewPlace = document.forms['new-place'];
 const inputTypeCardName = formNewPlace.querySelector('.popup__input_type_card-name');
 const inputTypeURL = formNewPlace.querySelector('.popup__input_type_url');
-
-const formCardDelete = document.forms['сonfirm-delete'];
-const popupButtonForDelete = formCardDelete.querySelector('.popup__button');
 
 const formUpdateAvatarIcon = document.forms['update-avatar-icon'];
 const linkForUpdateAvatar = formUpdateAvatarIcon.querySelector('.popup__input_type_url_update-avatar-icon')
@@ -99,7 +96,7 @@ function changeProfile(evt) {
   profileTitle.textContent = inputTypeName.value
   profileDescription.textContent = inputTypeDescription.value
   sendServerChangeProfile(inputTypeName.value,inputTypeDescription.value)
-  // closePopup(popupTypeEditProfile)
+  clearValidation(popupTypeEditProfile,enableValidation)
 }
 
 function sendServerChangeProfile(name, description) {
@@ -107,10 +104,9 @@ function sendServerChangeProfile(name, description) {
     updateAccountData(name,description)
       .then((data)=>{
         profileTitle.textContent = data.name
-        profileDescription.textContent = data.description
+        profileDescription.textContent = data.about
         closePopup(popupTypeEditProfile)
       })
-    // closePopup(popupTypeEditProfile)
 }
 
 function addNewCard(evt) {
@@ -119,20 +115,32 @@ function addNewCard(evt) {
   const cardData = {
     name: inputTypeCardName.value,
     link: inputTypeURL.value,
+    likes: [],
+    owner: user
   }
-  sendServerNewCard(cardData.name,cardData.link)
+  sendServerNewCard(cardData)
   evt.target.reset()
+  clearValidation(popupTypeNewCard,enableValidation)
 }
 
-function sendServerNewCard(name, link) {
+function sendServerNewCard(cardData) {
   labelForWaitingButton(buttonSaveAvatar,true)
-  sendNewCardData(name, link)
+  
+  const card = createCard(
+    user,
+    cardData, 
+    addLikeOnCard,
+    deleteLikeOnCard,
+    showImgView,
+    )
+
+  sendNewCardData(cardData)
     .then((data) => {
       const cardData = {
         name: data.name,
         link: data.link
       }
-      const card = createCard(cardData, showImgView)
+
       const popupTypeNewCard = document.querySelector('.popup_type_new-card')
       placesList.prepend(card)
       closePopup(popupTypeNewCard)
@@ -156,14 +164,7 @@ function sendServerUserAvatar(link) {
 })
 }
 
-function confirmDeleteCard(cardElement) {
-  deleteOwnCard(cardElement)
-  .then(()=> {
-  cardElement.remove();
-  closeModal(popupForDelete)
-    }
-  )
-}
+
 
 // Вызов функции валидации _______________________________________________________________________________________
 

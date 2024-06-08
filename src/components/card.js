@@ -1,24 +1,30 @@
-export function createCard(user,allDataForCardFromServer, addLikeOnCard,deleteLikeOnCard, showImgView,openPopupForDeleteCard){
-  const cardTemplate = document.querySelector('#card-template').content;
-  const card = cardTemplate.querySelector('.card').cloneNode(true);
-  const cardTitle = card.querySelector('.card__title');
-  const bigImage = document.querySelector('.popup_type_image'); 
-  const cardDeleteButton = card.querySelector('.card__delete-button');
-  const cardLikeButton = card.querySelector('.card__like-button');
+import { sendServerDeleteCard } from "./api";
+import { openPopup, closePopup } from "./modal";
+
+export function createCard(user,allDataForCardFromServer, addLikeOnCard,deleteLikeOnCard, showImgView) {
+  const cardTemplate = document.querySelector('#card-template').content
+  const card = cardTemplate.querySelector('.card').cloneNode(true)
+  const cardTitle = card.querySelector('.card__title')
+  const bigImage = document.querySelector('.popup_type_image')
+  const cardDeleteButton = card.querySelector('.card__delete-button')
+  const cardLikeButton = card.querySelector('.card__like-button')
   
-  const cardLikesCountFromBrowser = card.querySelector('.card__likes-count');
-  cardLikesCountFromBrowser.innerHTML = allDataForCardFromServer.likes.length;
+  const cardLikesCountFromBrowser = card.querySelector('.card__likes-count')
+  cardLikesCountFromBrowser.textContent = allDataForCardFromServer.likes.length
  
-  const cardImage = card.querySelector('.card__image');
-  cardImage.src = allDataForCardFromServer.link;
-  cardImage.alt = allDataForCardFromServer.name;
-  cardTitle.textContent = allDataForCardFromServer.name;
+  const cardImage = card.querySelector('.card__image')
+  cardImage.src = allDataForCardFromServer.link
+  cardImage.alt = allDataForCardFromServer.name
+  cardTitle.textContent = allDataForCardFromServer.name
+
+  const popupForDelete = document.querySelector('.popup_type_сonfirm-delete')
+  const formCardDelete = document.forms['сonfirm-delete']
 
   allDataForCardFromServer.likes.forEach(like => {
     if (like._id == user._id) {
-     cardLikeButton.classList.add('card__like-button_is-active');       
+     cardLikeButton.classList.add('card__like-button_is-active')
      }
-   });
+   })
 
   cardLikeButton.addEventListener ('click', () =>
   {
@@ -28,32 +34,47 @@ export function createCard(user,allDataForCardFromServer, addLikeOnCard,deleteLi
   })
 
       if (hasLike) {
-        deleteLikeOnCard(allDataForCardFromServer).then( (newCardData) => 
+        deleteLikeOnCard(allDataForCardFromServer)
+        .then( (newCardData) => 
           {
-            allDataForCardFromServer = newCardData;
-            cardLikesCountFromBrowser.innerHTML = allDataForCardFromServer.likes.length;
-            rebindLike(cardLikeButton);
+            allDataForCardFromServer = newCardData
+            cardLikesCountFromBrowser.textContent = allDataForCardFromServer.likes.length
+            rebindLike(cardLikeButton)
           })
 
       } else {
-              addLikeOnCard(allDataForCardFromServer).then( (newCardData)=> 
+        addLikeOnCard(allDataForCardFromServer)
+        .then( (newCardData) => 
             {
-              allDataForCardFromServer = newCardData;
-              cardLikesCountFromBrowser.innerHTML = allDataForCardFromServer.likes.length;
-              rebindLike(cardLikeButton);
+              allDataForCardFromServer = newCardData
+              cardLikesCountFromBrowser.textContent = allDataForCardFromServer.likes.length
+              rebindLike(cardLikeButton)
             })
           }
-  });
+  })
 
-  cardImage.addEventListener('click', () => showImgView(allDataForCardFromServer, bigImage));
+  cardImage.addEventListener('click', () => showImgView(allDataForCardFromServer, bigImage))
 
-if(allDataForCardFromServer.owner._id == user._id) {
-    cardDeleteButton.addEventListener('click', () => openPopupForDeleteCard(cardData));} 
-      else {
-        cardDeleteButton.hidden = true;
-      }
+      if (allDataForCardFromServer.owner._id == user._id) {cardDeleteButton.addEventListener('click', () => openPopup(popupForDelete))} 
+      else {cardDeleteButton.remove()}
 
-const rebindLike= (cardLikeButton) => {cardLikeButton.classList.toggle('card__like-button_is-active');}
-      
+  formCardDelete.addEventListener('submit', deleteCard)
+
+const rebindLike= (cardLikeButton) => {cardLikeButton.classList.toggle('card__like-button_is-active')}
+
+function deleteCard(evt) {
+  evt.preventDefault()
+  confirmDeleteCard()
+  deleteCard(card)
+}
+
+function deleteCard(card) {
+  sendServerDeleteCard(card)
+  .then((data)=> {
+  card.remove();
+  closeModal(popupForDelete)
+    }
+  )
+}
 return card;
 }

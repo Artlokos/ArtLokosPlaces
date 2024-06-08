@@ -66,14 +66,14 @@ export function updateProfileImage (imageLink) {
   .then(handleResponse)
 }
 
-export function sendNewCardData (name,link) {
+export function sendNewCardData (cardData) {
   const url = `${config.baseUrl}/cards`
   const options = {
     method: 'POST',
     headers: config.headers,
     body: JSON.stringify({
-      name: name,
-      link: link
+      name: cardData.name,
+      link: cardData.link
       // name: 'Архангельск',
       // link: 'https://travelsoul.ru/wp-content/uploads/e/d/3/ed341b39b377919be4cb4f960fd35db3.jpeg'
     })
@@ -82,7 +82,7 @@ export function sendNewCardData (name,link) {
   .then(handleResponse)
 }
 
-export function deleteOwnCard (cardData) {
+export function sendServerDeleteCard (cardData) {
   const url = `${config.baseUrl}/cards/${cardData._id}`
   const options = {
     method: 'DELETE',
@@ -111,3 +111,4 @@ export function deleteLikeOnCard(cardData) {
   return fetch (url, options )
   .then(handleResponse)
 }
+

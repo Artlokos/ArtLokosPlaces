@@ -130,31 +130,29 @@ function confirmDeleteCard(cardElement) {
   cardElement.remove();
   closeModal(popupForDelete);
     }
-  );
-};
-
-
-function popupChangeProfileImage () {
-  openPopup(popupTypeUpdateAvatarIcon);
-  buttonSaveAvatar.addEventListener('click', () => updateProfileImage(linkForUpdateAvatar))
-
+  )
 }
 
 profileImage.addEventListener('click', popupChangeProfileImage)
 
-function updateProfileImage(linkForUpdateAvatar){
-  
-    const linkProfileImage = linkForUpdateAvatar.value;
-  
+function popupChangeProfileImage (event) {
+  event.preventDefault()
+  openPopup(popupTypeUpdateAvatarIcon)
+  popupTypeUpdateAvatarIcon.addEventListener('submit', () => updateProfileImage(linkForUpdateAvatar.value))
+}
+
+function updateProfileImage (link) {
+ 
     labelForWaitingButton(buttonSaveAvatar,true);
   
-    changeProfileImage(linkProfileImage)
+    changeProfileImage(link)
     .then((data)=>{
       console.dir(data)
-      profileImage.style.backgroundImage = ('url(' + data.avatar + ')');
-      linkForUpdateAvatar.value = '';
+      profileImage.style.backgroundImage = ('url(' + data.avatar + ')')
+      popupTypeUpdateAvatarIcon.reset()
       closePopup(popupTypeUpdateAvatarIcon);
     })
     .catch((err) => console.log(err))
     .finally(()=>{labelForWaitingButton(buttonSaveAvatar, false)})
-  };
+  }
+

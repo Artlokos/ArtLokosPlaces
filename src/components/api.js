@@ -22,12 +22,7 @@ export const config = {
       headers: config.headers
     }
     return fetch (url, options)
-    // .then (res => {if (res.ok) { return res.json();}
-    // return Promise.reject(`Что-то пошло не так: ${res.status}`);})
       .then(handleResponse)
-      // .then((data) => {
-      //                   return data
-      //                 })
     }
     
 export function getInitialCards() {
@@ -37,8 +32,6 @@ export function getInitialCards() {
       headers: config.headers
     }
   return fetch (url, options)
-    // .then (res => {if (res.ok) { return res.json();}
-    //               return Promise.reject(`Что-то пошло не так: ${res.status}`);})
     .then(handleResponse)
     .then( (dataInitialCards) => {return dataInitialCards;})
     .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})};

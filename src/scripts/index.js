@@ -27,20 +27,18 @@ const inputTypeURL = document.querySelector('.popup__input_type_url');
 const popupForDelete = document.querySelector('.popup_type_сonfirm-delete');
 const popupButtonForDelete = popupForDelete.querySelector('.popup__button');
 
-const popupTypeUpdateAvatarIcon = document.querySelector('.popup_type_update-avatar-icon');
-const linkForUpdateAvatar = popupTypeUpdateAvatarIcon.querySelector('.popup__input_type_url_update-avatar-icon')
-const buttonSaveAvatar = popupTypeUpdateAvatarIcon.querySelector('.popup__button');
+const updateAvatarIcon = document.forms['update-avatar-icon'];
+const linkForUpdateAvatar = updateAvatarIcon.querySelector('.popup__input_type_url_update-avatar-icon')
+const buttonSaveAvatar = updateAvatarIcon.querySelector('.popup__button');
 
 
-SendNewAccountData('Art Lokos','I am Art Lokos');
-
-let user = null;
+let user = null
 
 Promise.all([getUserInfo(), getInitialCards()])
 .then(([userDataFromServer,cardsFromServer]) => {
-  user = userDataFromServer;
-  profileTitle.textContent = user.name;
-  profileDescription.textContent = user.about;
+  user = userDataFromServer
+  profileTitle.textContent = user.name
+  profileDescription.textContent = user.about
   profileImage.style.backgroundImage = ('url(' + user.avatar + ')');
   cardsFromServer.forEach((allDataForCardFromServer)=> {
     const cardTemplate = createCard(
@@ -49,24 +47,36 @@ Promise.all([getUserInfo(), getInitialCards()])
       addLikeOnCard,
       deleteLikeOnCard,
       showImgView,
-      openPopupForDeleteCard);
-    placesList.prepend(cardTemplate);
+      openPopupForDeleteCard)
+    placesList.prepend(cardTemplate)
   });
 })
-.catch((err) => console.log(err));
+.catch((err) => console.log(err))
 
 // --Добавляем слушатели событий на элементы
-profileAddButton.addEventListener('click', () => openPopup(popupTypeNewCard),);
+profileAddButton.addEventListener('click', () => openPopup(popupTypeNewCard));
 
 profileEditButton.addEventListener('click', () => {
-  inputTypeName.value = profileTitle.textContent;
-  inputTypeDescription.value = profileDescription.textContent;
-  openPopup(popupTypeEdit);
+  inputTypeName.value = profileTitle.textContent
+  inputTypeDescription.value = profileDescription.textContent
+  openPopup(popupTypeEdit)
 });
 
-editProfile.addEventListener('submit', changeProfile);
+profileImage.addEventListener('click', () => {
+  openPopup(popupTypeUpdateAvatarIcon)
+  }
+)
 
-newPlace.addEventListener('submit', addNewCard); 
+editProfile.addEventListener('submit', changeProfile)
+
+newPlace.addEventListener('submit', addNewCard) 
+
+function popupChangeProfileImage (event) {
+  event.preventDefault()
+  openPopup(popupTypeUpdateAvatarIcon)
+  popupTypeUpdateAvatarIcon.addEventListener('submit', () => updateProfileImage(linkForUpdateAvatar.value))
+}
+
 // ___________________________________________________________________
 
 popups.forEach(popup => {
@@ -83,6 +93,8 @@ export function showImgView(cardData, popupTypeImage) {
   popupCaption.textContent = cardData.name;
   openPopup(popupTypeImage);
 }
+
+
 
 function changeProfile(evt) {
   evt.preventDefault();
@@ -131,14 +143,6 @@ function confirmDeleteCard(cardElement) {
   closeModal(popupForDelete);
     }
   )
-}
-
-profileImage.addEventListener('click', popupChangeProfileImage)
-
-function popupChangeProfileImage (event) {
-  event.preventDefault()
-  openPopup(popupTypeUpdateAvatarIcon)
-  popupTypeUpdateAvatarIcon.addEventListener('submit', () => updateProfileImage(linkForUpdateAvatar.value))
 }
 
 function updateProfileImage (link) {

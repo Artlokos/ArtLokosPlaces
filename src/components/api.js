@@ -28,15 +28,26 @@ export function getInitialCards()
   
 
 // Сеттеры  
-export function SendNewAccountData () {
+export function SendNewAccountData (name, description) {
   return fetch (`${config.baseUrl}/users/me`, {
   method: 'PATCH',
   headers: config.headers,
   body: JSON.stringify({
-    name: 'Art Lokos',
-    about: 'I am Art Lokos'
+    name: name,
+    about: description
+    })
   })
-});
+}
+
+export function changeProfileImage (imageLink) {
+  let adress = `${config.baseUrl}/users/me/avatar`;
+  return fetch (adress, {
+    method:'PATCH',
+    headers: config.headers,
+    body: JSON.stringify({
+      avatar: imageLink
+    })
+  })
 }
 
 export function SendNewCardtData () {
@@ -83,16 +94,14 @@ export function deleteLikeOnCard(cardData) {
   })
 };
 
-export function changeProfileImage (imageLink) {
-  let adress = `${config.baseUrl}/users/me/avatar`;
-  return fetch (adress, {
-    method:'PATCH',
-    headers: config.headers,
-    body: JSON.stringify({
-      avatar: imageLink
-  })
-  .then (response => {
-    return response.json();
-  })
-})
-}
+
+// export function SendNewAccountData (name, description) {
+//   return fetch (`${config.baseUrl}/users/me`, {
+//   method: 'PATCH',
+//   headers: config.headers,
+//   body: JSON.stringify({
+//     name: name,
+//     about: description
+//   })
+// });
+// }

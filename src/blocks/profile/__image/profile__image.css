@@ -1,4 +1,5 @@
 .profile__image {
+  position: relative;
   width: 120px;
   height: 120px;
   -webkit-border-radius: 50%;
@@ -7,6 +8,7 @@
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
+  /* background-image: url('../../../images/avatar1.jpg'); */
 }
 
 @media screen and (max-width: 740px) {
@@ -19,4 +21,16 @@
   .profile__image {
     margin-right: 0;
   }
+}
+.profile__image:hover{
+background-image: none;
+background: blue 50%;
+cursor: pointer;
+}
+.change-profile-image-icon{
+  display: none;
+  position: absolute;
+  background-color: black;
+  opacity: 0.4;
+
 }

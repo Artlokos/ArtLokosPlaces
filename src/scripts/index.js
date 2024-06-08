@@ -3,7 +3,7 @@ import {createCard} from '../components/card.js';
 import {openPopup, closePopup, closePopupWithOverlay, closePopupWithEscape} from '../components/modal.js';
 import {enableValidation} from '../components/validate.js';
 import {validationConfig} from '../components/config.js';
-import { getInitialCards, getUserInfo, SendNewAccountData, SendNewCardtData, deleteOwnCard, addLikeOnCard, deleteLikeOnCard } from '../components/api.js';
+import { getInitialCards, getUserInfo, SendNewAccountData, SendNewCardtData, deleteOwnCard, addLikeOnCard, deleteLikeOnCard,changeProfileImage } from '../components/api.js';
 // --Объявляем константы--
 const popups = document.querySelectorAll('.popup');
 const placesList = document.querySelector('.places__list');
@@ -28,9 +28,15 @@ const popupForDelete = document.querySelector('.popup_type_сonfirm-delete');
 const popupButtonForDelete = popupForDelete.querySelector('.popup__button');
 
 const popupTypeUpdateAvatarIcon = document.querySelector('.popup_type_update-avatar-icon');
-const linkForUpdateAvatar = popupTypeUpdateAvatarIcon.querySelector('popup__input_type_url_update-avatar-icon')
+const linkForUpdateAvatar = popupTypeUpdateAvatarIcon.querySelector('.popup__input_type_url_update-avatar-icon')
 const buttonSaveAvatar = popupTypeUpdateAvatarIcon.querySelector('.popup__button');
 
+
+function hoverProfile() {
+
+}
+
+SendNewAccountData('Art Lokos','I am Art Lokos');
 
 let user = null;
 
@@ -105,19 +111,7 @@ function openPopupForDeleteCard(cardData) {
 
 enableValidation(validationConfig);
 
-function updateProfileImage(){
-  const linkProfileImage = linkForUpdateAvatar.value;
 
-  labelForWaitingButton(buttonSaveAvatar,true);
-
-  changeProfileImage(linkProfileImage).then((data)=>{
-    profileImage.style.backgroundImage = ('url(' + data.avatar + ')');
-    linkForUpdateAvatar.value = '';
-    closePopup(popupTypeUpdateAvatarIcon);
-  })
-  .catch((err) => console.log(err))
-  .finally(()=>{labelForWaitingButton(buttonSaveAvatar, false)})
-};
 
 function labelForWaitingButton(button,condition) {
   if(condition) {
@@ -136,3 +130,29 @@ function confirmDeleteCard(cardElement) {
     }
   );
 };
+
+
+function popupChangeProfileImage () {
+  openPopup(popupTypeUpdateAvatarIcon);
+  buttonSaveAvatar.addEventListener('click', ()=> updateProfileImage(linkForUpdateAvatar))
+
+}
+
+profileImage.addEventListener('click', popupChangeProfileImage)
+
+function updateProfileImage(linkForUpdateAvatar){
+  
+    const linkProfileImage = linkForUpdateAvatar.value;
+  
+    labelForWaitingButton(buttonSaveAvatar,true);
+  
+    changeProfileImage(linkProfileImage)
+    // .then((data)=>{
+      // profileImage.style.backgroundImage = ('url(' + data.avatar + ')');
+      profileImage.style.backgroundImage = ('url(' + linkProfileImage + ')');
+      linkForUpdateAvatar.value = '';
+      closePopup(popupTypeUpdateAvatarIcon);
+    // })
+    // .catch((err) => console.log(err))
+    // .finally(()=>{labelForWaitingButton(buttonSaveAvatar, false)})
+  };

@@ -21,7 +21,7 @@ export function createCard(user,allDataForCardFromServer, addLikeOnCard,deleteLi
   const formCardDelete = document.forms['сonfirm-delete']
 
   allDataForCardFromServer.likes.forEach(like => {
-    if (like._id == user._id) {
+    if (like._id == user) {
      cardLikeButton.classList.add('card__like-button_is-active')
      }
    })
@@ -30,7 +30,7 @@ export function createCard(user,allDataForCardFromServer, addLikeOnCard,deleteLi
   {
 
   const hasLike =  allDataForCardFromServer.likes.some((like) => {
-    return like._id === user._id
+    return like._id === user
   })
 
       if (hasLike) {
@@ -41,6 +41,7 @@ export function createCard(user,allDataForCardFromServer, addLikeOnCard,deleteLi
             cardLikesCountFromBrowser.textContent = allDataForCardFromServer.likes.length
             rebindLike(cardLikeButton)
           })
+          .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 
       } else {
         addLikeOnCard(allDataForCardFromServer)
@@ -50,12 +51,13 @@ export function createCard(user,allDataForCardFromServer, addLikeOnCard,deleteLi
               cardLikesCountFromBrowser.textContent = allDataForCardFromServer.likes.length
               rebindLike(cardLikeButton)
             })
+            .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
           }
   })
 
   cardImage.addEventListener('click', () => showImgView(allDataForCardFromServer, bigImage))
 
-      if (allDataForCardFromServer.owner._id == user._id) {cardDeleteButton.addEventListener('click', () => openPopup(popupForDelete))} 
+      if (allDataForCardFromServer.owner._id == user) {cardDeleteButton.addEventListener('click', () => openPopup(popupForDelete))} 
       else {cardDeleteButton.remove()}
 
   formCardDelete.addEventListener('submit', deleteCard)
@@ -75,6 +77,7 @@ function deleteCard(card) {
   closeModal(popupForDelete)
     }
   )
+  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 return card;
 }

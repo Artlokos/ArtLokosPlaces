@@ -59,7 +59,7 @@ Promise.all([getUserInfo(), getInitialCards()])
   profileImage.style.backgroundImage = ('url(' + user.avatar + ')');
   cardsFromServer.forEach((allDataForCardFromServer)=> {
     const cardTemplate = createCard(
-      user,
+      user._id,
       allDataForCardFromServer, 
       addLikeOnCard,
       deleteLikeOnCard,
@@ -68,7 +68,8 @@ Promise.all([getUserInfo(), getInitialCards()])
     placesList.prepend(cardTemplate)
   });
 })
-.catch((err) => console.log(err))
+.catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
+
 
 // --Добавляем слушатели событий на элементы открытия попапов
 
@@ -97,9 +98,9 @@ formUpdateAvatarIcon.addEventListener('submit', changeProfileImage) // изме�
 
 function changeProfile(evt) {
   evt.preventDefault()
+  sendServerChangeProfile(inputTypeName.value,inputTypeDescription.value)
   profileTitle.textContent = inputTypeName.value
   profileDescription.textContent = inputTypeDescription.value
-  sendServerChangeProfile(inputTypeName.value,inputTypeDescription.value)
   clearValidation(formEditProfile,validationConfig)
 }
 
@@ -111,6 +112,8 @@ function sendServerChangeProfile(name, description) {
         profileDescription.textContent = data.about
         closePopup(popupTypeEditProfile)
       })
+      .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
+      .finally(labelForWaitingButton(buttonSaveAvatar,false))
 }
 
 function addNewCard(evt) {
@@ -144,11 +147,10 @@ function sendServerNewCard(cardData) {
         name: data.name,
         link: data.link
       }
-
-      const popupTypeNewCard = document.querySelector('.popup_type_new-card')
       placesList.prepend(card)
       closePopup(popupTypeNewCard)
     }) 
+    .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
 function changeProfileImage (evt) {
@@ -166,6 +168,7 @@ function sendServerUserAvatar(link) {
     formUpdateAvatarIcon.reset()
     closePopup(popupTypeUpdateAvatarIcon)
 })
+  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
 function labelForWaitingButton(button,condition) {

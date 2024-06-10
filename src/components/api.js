@@ -69,7 +69,7 @@ export function updateProfileImage (imageLink) {
   .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
-export function sendNewCardData (cardData) {
+export function  sendServerNewCard(cardData) {
   const url = `${config.baseUrl}/cards`
   const options = {
     method: 'POST',
@@ -85,7 +85,7 @@ export function sendNewCardData (cardData) {
 }
 
 export function sendServerDeleteCard (cardData) {
-  const url = `${config.baseUrl}/cards/${cardData._id}`
+  const url = `${config.baseUrl}/cards/${cardData}`
   const options = {
     method: 'DELETE',
     headers: config.headers

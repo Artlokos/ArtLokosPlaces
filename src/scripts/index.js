@@ -3,7 +3,8 @@ import {createCard} from '../components/card.js';
 import {openPopup, closePopup, closePopupWithOverlay, closePopupWithEscape} from '../components/modal.js';
 import {enableValidation,clearValidation} from '../components/validate.js';
 import {validationConfig} from '../components/config.js';
-import { getInitialCards, getUserInfo, updateAccountData, sendNewCardData, deleteOwnCard, addLikeOnCard, deleteLikeOnCard,updateProfileImage } from '../components/api.js';
+import {getInitialCards, getUserInfo, updateAccountData, sendServerNewCard,sendServerDeleteCard, addLikeOnCard, deleteLikeOnCard,updateProfileImage } from '../components/api.js';
+import { data } from 'autoprefixer';
 // --Объявляем константы--
 const popups = document.querySelectorAll('.popup');
 const placesList = document.querySelector('.places__list');
@@ -34,7 +35,12 @@ const formUpdateAvatarIcon = document.forms['update-avatar-icon'];
 const linkForUpdateAvatar = formUpdateAvatarIcon.querySelector('.popup__input_type_url_update-avatar-icon')
 const buttonSaveAvatar = formUpdateAvatarIcon.querySelector('.popup__button');
 
+const popupForDelete = document.querySelector('.popup_type_сonfirm-delete')
+const formDeleteCard = document.forms['сonfirm-delete']
+
 let user = null
+let cardIdentificator = null
+let cardForDelete = {}
 
 // Вызов функции валидации _______________________________________________________________________________________
 
@@ -59,17 +65,31 @@ Promise.all([getUserInfo(), getInitialCards()])
   profileImage.style.backgroundImage = ('url(' + user.avatar + ')');
   cardsFromServer.forEach((allDataForCardFromServer)=> {
     const cardTemplate = createCard(
-      user._id,
-      allDataForCardFromServer, 
-      addLikeOnCard,
-      deleteLikeOnCard,
+      user,
+      allDataForCardFromServer,
       showImgView,
+      openPopupForDeleteCard,
+      handleLikeCard
       )
     placesList.prepend(cardTemplate)
   });
 })
 .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 
+function labelForWaitingButton(button,condition) {
+  if(condition) {
+    button.textContent = 'Сохранение...';
+  } else {
+    button.textContent = 'Сохранить';
+  }
+}
+
+function showImgView(cardData, popupTypeImage) {
+    fullScreenImg.src = cardData.link
+    fullScreenImg.alt = cardData.name
+    imgLabel.textContent = cardData.name
+    openPopup(popupTypeImage)
+}
 
 // --Добавляем слушатели событий на элементы открытия попапов
 
@@ -79,12 +99,9 @@ profileEditButton.addEventListener('click', () => { // изменение дан
   inputTypeName.value = profileTitle.textContent
   inputTypeDescription.value = profileDescription.textContent
   openPopup(popupTypeEditProfile)
-});
+})
 
-profileImage.addEventListener('click', () => { // изменение аватара пользователя
-  openPopup(popupTypeUpdateAvatarIcon)
-  }
-)
+profileImage.addEventListener('click', () => {openPopup(popupTypeUpdateAvatarIcon)}) // изменение аватара пользователя
 
 // --Вешаем слушатели сабмитов на отправку формы
 
@@ -93,6 +110,8 @@ formEditProfile.addEventListener('submit', changeProfile) // изменение 
 formNewPlace.addEventListener('submit', addNewCard)  // добавление новой карточки
 
 formUpdateAvatarIcon.addEventListener('submit', changeProfileImage) // изменение аватара
+
+formDeleteCard.addEventListener('submit', deleteCard) // удаление карточки
 
 // --Объявляем функции форм
 
@@ -118,30 +137,29 @@ function sendServerChangeProfile(name, description) {
 
 function addNewCard(evt) {
   evt.preventDefault()
-  
   const cardData = {
     name: inputTypeCardName.value,
     link: inputTypeURL.value,
     likes: [],
     owner: user
   }
-  sendServerNewCard(cardData)
+  sendNewCardData(cardData)
   evt.target.reset()
   clearValidation(formNewPlace,validationConfig)
 }
 
-function sendServerNewCard(cardData) {
+function sendNewCardData (cardData) {
   labelForWaitingButton(buttonSaveAvatar,true)
   
   const card = createCard(
     user,
     cardData, 
-    addLikeOnCard,
-    deleteLikeOnCard,
     showImgView,
+    openPopupForDeleteCard,
+    handleLikeCard
     )
 
-  sendNewCardData(cardData)
+   sendServerNewCard(cardData)
     .then((data) => {
       const cardData = {
         name: data.name,
@@ -171,17 +189,26 @@ function sendServerUserAvatar(link) {
   .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
-function labelForWaitingButton(button,condition) {
-  if(condition) {
-    button.textContent = 'Сохранение...';
-  } else {
-    button.textContent = 'Сохранить';
-  }
+function openPopupForDeleteCard(card, cardId) { //обработчик открытия модального окна удаления
+    cardForDelete = card
+    cardIdentificator=cardId
+    openPopup(popupForDelete)
+} 
+
+function deleteCard(evt) {
+    evt.preventDefault()
+    deleteCardSubmit(cardForDelete,cardIdentificator)
 }
 
-function showImgView(cardData, popupTypeImage) {
-    fullScreenImg.src = cardData.link
-    fullScreenImg.alt = cardData.name
-    imgLabel.textContent = cardData.name
-    openPopup(popupTypeImage)
-  }
+function deleteCardSubmit(card,cardIdentificator) {
+  sendServerDeleteCard(cardIdentificator)
+  .then((data) =>{
+    card.remove()
+    closePopup(popupForDelete)
+  })
+  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
+}
+
+function handleLikeCard(status,cardData) {
+ if (!status) {addLikeOnCard(cardData).then(res => changeLike(res).catch())}
+ else {deleteLikeOnCard(cardData).then(res => changeLike(res).catch())}}

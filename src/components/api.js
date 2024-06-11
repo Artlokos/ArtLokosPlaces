@@ -96,7 +96,7 @@ export function sendServerDeleteCard (cardData) {
 }
 
 export function addLikeOnCard(cardData) {
-  const url = `${config.baseUrl}/cards/likes/${cardData._id}`
+  const url = `${config.baseUrl}/cards/likes/${cardData}`
   const options = {
     method:'PUT',
     headers: config.headers
@@ -107,7 +107,7 @@ export function addLikeOnCard(cardData) {
 }
 
 export function deleteLikeOnCard(cardData) {
-  const url = `${config.baseUrl}/cards/likes/${cardData._id}`
+  const url = `${config.baseUrl}/cards/likes/${cardData}`
   const options = {
     method:'DELETE',
     headers: config.headers

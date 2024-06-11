@@ -1,5 +1,5 @@
 import '../pages/index.css'
-import {createCard} from '../components/card.js';
+import {createCard, changeLike,hasLike} from '../components/card.js';
 import {openPopup, closePopup, closePopupWithOverlay, closePopupWithEscape} from '../components/modal.js';
 import {enableValidation,clearValidation} from '../components/validate.js';
 import {validationConfig} from '../components/config.js';
@@ -203,6 +203,20 @@ function deleteCardSubmit(card,cardIdentificator) {
   .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
-function handleLikeCard(status,cardData) {
- if (!status) {addLikeOnCard(cardData).then(res => changeLike(res).catch())}
- else {deleteLikeOnCard(cardData).then(res => changeLike(res).catch())}}
+function handleLikeCard(status,cardData,card,userId) {
+    if (status) {deleteLikeOnCard(cardData).then(
+      data => {
+        let likes = data.likes
+        changeLike(likes,card,userId)
+      })
+    .catch( err => {console.log('Ошибка. Запрос не выполнен: ', err)})      
+     }
+    else {addLikeOnCard(cardData).then(
+      data => {
+        let likes = data.likes
+        changeLike(likes,card,userId)
+      })
+    .catch(err => {console.log('Ошибка. Запрос не выполнен: ', err)})
+        }
+}
+ 

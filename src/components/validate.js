@@ -29,7 +29,7 @@ const toggleButtonState = (inputList, buttonElement, validationConfig) => {
 };
 
 const checkInputValidity = (formElement, inputElement,validationConfig) => {
-  if(inputElement.value.length<1){
+  if(inputElement.textContent.length<1){
     showInputError(formElement, inputElement, inputElement.validationMessage,validationConfig);
   }
   if(inputElement.validity.patternMismatch){
@@ -48,6 +48,10 @@ const setEventListeners = (formElement,validationConfig) => {
   const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
   const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
     inputList.forEach((inputElement) => {
+      if (inputElement.textContent ===""){
+        buttonElement.disabled = true;
+        buttonElement.classList.add(validationConfig.inactiveButtonClass);
+      }
     inputElement.addEventListener('input', function () {
       checkInputValidity(formElement, inputElement, validationConfig);
       toggleButtonState(inputList, buttonElement,validationConfig);

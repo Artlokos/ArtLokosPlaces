@@ -140,8 +140,6 @@ function addNewCard(evt) {
   const cardData = {
     name: inputTypeCardName.value,
     link: inputTypeURL.value,
-    likes: [],
-    owner: user
   }
   sendNewCardData(cardData)
   evt.target.reset()
@@ -151,20 +149,16 @@ function addNewCard(evt) {
 function sendNewCardData (cardData) {
   labelForWaitingButton(buttonSaveAvatar,true)
   
-  const card = createCard(
-    user,
-    cardData, 
-    showImgView,
-    openPopupForDeleteCard,
-    handleLikeCard
-    )
-
    sendServerNewCard(cardData)
     .then((data) => {
-      const cardData = {
-        name: data.name,
-        link: data.link
-      }
+      const card = createCard(
+        user,
+        data, 
+        showImgView,
+        openPopupForDeleteCard,
+        handleLikeCard
+        )
+
       placesList.prepend(card)
       closePopup(popupTypeNewCard)
     }) 

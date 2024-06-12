@@ -33,11 +33,10 @@ export function getInitialCards() {
       method: 'GET',
       headers: config.headers
     }
-  return fetch (url, options)
-    .then(handleResponse)
-    .then( (dataInitialCards) => {return dataInitialCards;})
-    .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})}
- 
+    return fetch (url, options)
+      .then(handleResponse)
+      .then( (dataInitialCards) => {return dataInitialCards;})
+    } 
 
 // Сеттеры  
 export function updateAccountData (name, description) {
@@ -52,7 +51,6 @@ export function updateAccountData (name, description) {
   }
   return fetch (url,options)
   .then(handleResponse)
-  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
 export function updateProfileImage (imageLink) {
@@ -66,7 +64,6 @@ export function updateProfileImage (imageLink) {
   }
   return fetch (url, options)
   .then(handleResponse)
-  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
 export function  sendServerNewCard(cardData) {
@@ -81,7 +78,6 @@ export function  sendServerNewCard(cardData) {
   }
   return fetch (url, options )
   .then(handleResponse)
-  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
 export function sendServerDeleteCard (cardData) {
@@ -92,7 +88,6 @@ export function sendServerDeleteCard (cardData) {
   }
   return fetch (url, options)
   .then(handleResponse)
-  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
 export function addLikeOnCard(cardData) {
@@ -103,7 +98,6 @@ export function addLikeOnCard(cardData) {
   }
   return fetch (url, options)
   .then(handleResponse)
-  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
 export function deleteLikeOnCard(cardData) {
@@ -114,6 +108,5 @@ export function deleteLikeOnCard(cardData) {
   }
   return fetch (url, options )
   .then(handleResponse)
-  .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 

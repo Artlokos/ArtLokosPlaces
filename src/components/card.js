@@ -14,20 +14,19 @@ export function createCard(user,cardDataFromServer,showImgView,openPopupForDelet
   cardTitle.textContent = cardDataFromServer.name
 
   cardLikeButton.addEventListener ('click', () => handleLikeCard(hasLike(likeButton),cardDataFromServer._id,card,user._id))
-
  
   cardImage.addEventListener('click', () => showImgView(cardDataFromServer, bigImage))
 
       if (cardDataFromServer.owner._id == user._id) 
-      {cardDeleteButton.addEventListener('click', () => openPopupForDeleteCard(card, cardDataFromServer._id))} 
+          {cardDeleteButton.addEventListener('click', () => openPopupForDeleteCard(card, cardDataFromServer._id))} 
       else {cardDeleteButton.remove()}
 
 return card
 }
 
 export const hasLike = (likeButton) =>  {
-  if (likeButton.classList.contains('card__like-button_is-active')) {return true} else{return false}}
-
+  if (likeButton.classList.contains('card__like-button_is-active')) {return true} else{return false}
+}
 
 export const changeLike = (likes,card,userId) => {
   const likesCount = card.querySelector('.card__likes-count')
@@ -37,5 +36,4 @@ export const changeLike = (likes,card,userId) => {
   if (likes.some((like)=> {return like._id === userId})) 
         {likeButton.classList.add('card__like-button_is-active')}
   else  {likeButton.classList.remove('card__like-button_is-active')}
-  
 }

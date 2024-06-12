@@ -90,23 +90,12 @@ export function sendServerDeleteCard (cardData) {
   .then(handleResponse)
 }
 
-export function addLikeOnCard(cardData) {
-  const url = `${config.baseUrl}/cards/likes/${cardData}`
+export function sendServerCardLike(cardId, methodName) {
+  const url = `${config.baseUrl}/cards/likes/${cardId}`
   const options = {
-    method:'PUT',
-    headers: config.headers
-  }
-  return fetch (url, options)
-  .then(handleResponse)
-}
-
-export function deleteLikeOnCard(cardData) {
-  const url = `${config.baseUrl}/cards/likes/${cardData}`
-  const options = {
-    method:'DELETE',
+    method:methodName,
     headers: config.headers
   }
   return fetch (url, options )
   .then(handleResponse)
 }
-

@@ -163,6 +163,8 @@ function sendNewCardData (cardData) {
       closePopup(popupTypeNewCard)
     }) 
     .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
+    .finally(labelForWaitingButton(buttonSaveAvatar,false))
+
 }
 
 function changeProfileImage (evt) {
@@ -181,6 +183,8 @@ function sendServerUserAvatar(link) {
     closePopup(popupTypeUpdateAvatarIcon)
 })
   .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
+  .finally(labelForWaitingButton(buttonSaveAvatar,false))
+
 }
 
 function openPopupForDeleteCard(card, cardId) { //обработчик открытия модального окна удаления

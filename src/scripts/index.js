@@ -203,15 +203,15 @@ function deleteCardSubmit(card,cardIdentificator) {
   .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
-function handleLikeCard(status,cardData,card,userId) {
-    if (status) {deleteLikeOnCard(cardData).then(
+function handleLikeCard(status,cardId,card,userId) {
+    if (status) {deleteLikeOnCard(cardId).then(
       data => {
         let likes = data.likes
         changeLike(likes,card,userId)
       })
     .catch( err => {console.log('Ошибка. Запрос не выполнен: ', err)})      
      }
-    else {addLikeOnCard(cardData).then(
+    else {addLikeOnCard(cardId).then(
       data => {
         let likes = data.likes
         changeLike(likes,card,userId)

@@ -13,14 +13,12 @@ export function createCard(user,cardDataFromServer,showImgView,openPopupForDelet
   cardImage.alt = cardDataFromServer.name
   cardTitle.textContent = cardDataFromServer.name
 
- let status = hasLike(likeButton)
+  changeLike(cardDataFromServer.likes,card,user)
+  cardLikeButton.addEventListener ('click', () => handleLikeCard(hasLike(likeButton),cardDataFromServer._id,card,user))
 
- cardLikeButton.addEventListener ('click', () => handleLikeCard(status,cardDataFromServer._id,card,user._id))
+  cardImage.addEventListener('click', () => showImgView(cardDataFromServer, bigImage))
 
- 
- cardImage.addEventListener('click', () => showImgView(cardDataFromServer, bigImage))
-
-      if (cardDataFromServer.owner._id == user._id) 
+      if (cardDataFromServer.owner._id === user) 
       {cardDeleteButton.addEventListener('click', () => openPopupForDeleteCard(card, cardDataFromServer._id))} 
       else {cardDeleteButton.remove()}
 

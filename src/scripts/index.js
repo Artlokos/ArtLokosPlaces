@@ -63,9 +63,9 @@ Promise.all([getUserInfo(), getInitialCards()])
   profileTitle.textContent = user.name
   profileDescription.textContent = user.about
   profileImage.style.backgroundImage = ('url(' + user.avatar + ')');
-  cardsFromServer.forEach((allDataForCardFromServer)=> {
+  cardsFromServer.reverse().forEach((allDataForCardFromServer)=> {
     const cardTemplate = createCard(
-      user,
+      user._id,
       allDataForCardFromServer,
       showImgView,
       openPopupForDeleteCard,
@@ -117,52 +117,40 @@ formDeleteCard.addEventListener('submit', deleteCard) // удаление кар
 
 function changeProfile(evt) {
   evt.preventDefault()
-  sendServerChangeProfile(inputTypeName.value,inputTypeDescription.value)
-  profileTitle.textContent = inputTypeName.value
-  profileDescription.textContent = inputTypeDescription.value
-  clearValidation(formEditProfile,validationConfig)
-}
-
-function sendServerChangeProfile(name, description) {
   labelForWaitingButton(buttonSaveAvatar,true)
-    updateAccountData(name,description)
-      .then((data)=>{
-        profileTitle.textContent = data.name
-        profileDescription.textContent = data.about
-        closePopup(popupTypeEditProfile)
-      })
-      .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
-      .finally(labelForWaitingButton(buttonSaveAvatar,false))
+  updateAccountData(name,description)
+    .then((data)=>{
+      profileTitle.textContent = data.name
+      profileDescription.textContent = data.about
+      clearValidation(formEditProfile,validationConfig)
+      closePopup(popupTypeEditProfile)
+    })
+    .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
+    .finally(labelForWaitingButton(buttonSaveAvatar,false))
 }
 
 function addNewCard(evt) {
   evt.preventDefault()
   const cardData = {
     name: inputTypeCardName.value,
-    link: inputTypeURL.value,
-  }
-  sendNewCardData(cardData)
-  evt.target.reset()
-  clearValidation(formNewPlace,validationConfig)
-}
-
-function sendNewCardData (cardData) {
+    link: inputTypeURL.value}
   labelForWaitingButton(buttonSaveAvatar,true)
-  
-   sendServerNewCard(cardData)
-    .then((data) => {
-      const card = createCard(
-        user,
-        data, 
-        showImgView,
-        openPopupForDeleteCard,
-        handleLikeCard
-        )
-
-      placesList.prepend(card)
-      closePopup(popupTypeNewCard)
-    }) 
-    .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
+  sendServerNewCard(cardData)
+   .then((data) => {
+     const card = createCard(
+       user._id,
+       data, 
+       showImgView,
+       openPopupForDeleteCard,
+       handleLikeCard
+       )
+     placesList.prepend(card)
+     evt.target.reset()
+     clearValidation(formNewPlace,validationConfig)
+     closePopup(popupTypeNewCard)
+   }) 
+   .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
+   .finally(labelForWaitingButton(buttonSaveAvatar,false))
 }
 
 function changeProfileImage (evt) {

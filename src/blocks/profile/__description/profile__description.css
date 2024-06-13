@@ -1,8 +1,11 @@
 .profile__description {
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
   font-size: 18px;
-  line-height: 22px;
-  grid-area: description;
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media screen and (max-width: 568px) {

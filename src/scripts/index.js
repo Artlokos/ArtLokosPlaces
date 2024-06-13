@@ -3,7 +3,7 @@ import {createCard, changeLike,hasLike} from '../components/card.js';
 import {openPopup, closePopup, closePopupWithOverlay, closePopupWithEscape} from '../components/modal.js';
 import {enableValidation,clearValidation} from '../components/validate.js';
 import {validationConfig} from '../components/config.js';
-import {getInitialCards, getUserInfo, updateAccountData, sendServerNewCard,sendServerDeleteCard, addLikeOnCard, deleteLikeOnCard,updateProfileImage } from '../components/api.js';
+import {getInitialCards, getUserInfo, updateAccountData, sendServerNewCard,sendServerDeleteCard, sendServerCardLike,updateProfileImage } from '../components/api.js';
 import { data } from 'autoprefixer';
 // --Объявляем константы--
 const popups = document.querySelectorAll('.popup');
@@ -169,6 +169,8 @@ function sendServerUserAvatar(link) {
     closePopup(popupTypeUpdateAvatarIcon)
 })
   .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
+  .finally(labelForWaitingButton(buttonSaveAvatar,false))
+
 }
 
 function openPopupForDeleteCard(card, cardId) { //обработчик открытия модального окна удаления
@@ -191,15 +193,15 @@ function deleteCardSubmit(card,cardIdentificator) {
   .catch( (err) => {console.log('Ошибка. Запрос не выполнен: ', err)})
 }
 
-function handleLikeCard(status,cardData,card,userId) {
-    if (status) {deleteLikeOnCard(cardData).then(
+function handleLikeCard(status,cardId,card,userId,methodName) {
+    if (status) {sendServerCardLike(cardId,'DELETE').then(
       data => {
         let likes = data.likes
         changeLike(likes,card,userId)
       })
     .catch( err => {console.log('Ошибка. Запрос не выполнен: ', err)})      
      }
-    else {addLikeOnCard(cardData).then(
+    else {sendServerCardLike(cardId,'PUT').then(
       data => {
         let likes = data.likes
         changeLike(likes,card,userId)

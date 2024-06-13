@@ -26,8 +26,8 @@ return card
 }
 
 export const hasLike = (likeButton) =>  {
-  if (likeButton.classList.contains('card__like-button_is-active')) {return true} else{return false}}
-
+  if (likeButton.classList.contains('card__like-button_is-active')) {return true} else{return false}
+}
 
 export const changeLike = (likes,card,userId) => {
   const likesCount = card.querySelector('.card__likes-count')
@@ -37,5 +37,4 @@ export const changeLike = (likes,card,userId) => {
   if (likes.some((like)=> {return like._id === userId})) 
         {likeButton.classList.add('card__like-button_is-active')}
   else  {likeButton.classList.remove('card__like-button_is-active')}
-  
 }

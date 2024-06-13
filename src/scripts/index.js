@@ -118,7 +118,7 @@ formDeleteCard.addEventListener('submit', deleteCard) // удаление кар
 function changeProfile(evt) {
   evt.preventDefault()
   labelForWaitingButton(buttonSaveAvatar,true)
-  updateAccountData(name,description)
+  updateAccountData(inputTypeName.value,inputTypeDescription.value)
     .then((data)=>{
       profileTitle.textContent = data.name
       profileDescription.textContent = data.about
